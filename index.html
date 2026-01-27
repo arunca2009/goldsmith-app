@@ -172,8 +172,10 @@ function saveOrder(){
  "&advance="+advance.value+
  "&balance="+balance.innerText;
 
- window.open(url);
- alert("Saved");
+ fetch(url)
+ .then(res=>res.text())
+ .then(data=>alert(data))
+ .catch(err=>alert("Save Failed"));
 }
 
 /* SHARE */
@@ -333,6 +335,7 @@ function generatePDF(){
 
 </body>
 </html>
+
 
 
 
