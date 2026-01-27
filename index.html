@@ -100,6 +100,7 @@ if(prompt("Enter Password")!="1234"){
 
 <input id="oldWeight" placeholder="Old Gold Weight (g)">
 <input id="oldRate" placeholder="Old Gold Rate">
+<input id="oldWastage" placeholder="Old Gold Wastage (%)">
 </div>
 
 <button onclick="calculate()">CALCULATE</button>
@@ -143,8 +144,10 @@ function calculate(){
 
  let newTotal=(w*r)+m+s+h;
 
- let pure=ow*(ot/100);
- let oldValue=pure*orate;
+ let wast = Number(oldWastage.value);
+ let pure = ow*(ot/100);
+ let finalPure = pure - (pure*(wast/100));
+ let oldValue = finalPure*orate;
 
  let final=newTotal-oldValue;
  if(final<0) final=0;
@@ -282,10 +285,12 @@ function generatePDF(){
    doc.text("Old Gold Details",20,y);
    y+=8;
 
-   row("Old Gold Weight",ow+" g");
-   row("Old Gold Touch",otText);
-   row("Old Gold Rate",orate);
-   row("Old Gold Value",oldValue.toFixed(2));
+ row("Old Gold Weight",ow+" g");
+ row("Old Gold Touch",otText);
+ row("Old Gold Wastage",oldWastage.value+" %");
+ row("Old Gold Rate",orate);
+ row("Old Gold Value",oldValue.toFixed(2));
+
 
    y+=5;
  }
@@ -305,4 +310,5 @@ function generatePDF(){
 
 </body>
 </html>
+
 
