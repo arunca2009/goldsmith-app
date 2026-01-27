@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Goldsmith System</title>
+<title>Goldsmith Billing</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
@@ -13,16 +13,14 @@ body{
  font-family: Arial, sans-serif;
  background:#f2f2f2;
  padding:10px;
- margin:0;
 }
 .box{
- background:#ffffff;
+ background:#fff;
  padding:15px;
  border-radius:12px;
  max-width:520px;
  margin:auto;
 }
-h2{text-align:center;}
 input,select,button{
  width:100%;
  padding:12px;
@@ -35,13 +33,13 @@ button{
  background:#0a7cff;
  color:white;
  border:none;
- font-size:17px;
 }
+h2{text-align:center;}
 .section{
  background:#f7f7f7;
  padding:10px;
  border-radius:8px;
- margin-top:12px;
+ margin-top:10px;
 }
 </style>
 </head>
@@ -56,7 +54,7 @@ if(prompt("Enter Password")!="1234"){
 
 <div class="box">
 
-<h2>Jewellery Billing System</h2>
+<h2>SRI MARUTHAMALAI JEWELS WORKS</h2>
 
 <div class="section">
 <input id="name" placeholder="Customer Name">
@@ -69,7 +67,6 @@ if(prompt("Enter Password")!="1234"){
 <option>Necklace</option>
 <option>Bangle</option>
 <option>Chain</option>
-<option>Bracelet</option>
 </select>
 
 <select id="purity">
@@ -77,36 +74,37 @@ if(prompt("Enter Password")!="1234"){
 <option>18K</option>
 </select>
 
-<input id="weight" placeholder="New Gold Weight (g)" inputmode="decimal">
-<input id="rate" placeholder="Gold Rate per gram" inputmode="decimal">
-<input id="making" placeholder="Making Charge" inputmode="decimal">
-<input id="stone" placeholder="Stone Charge" inputmode="decimal">
-<input id="hallmark" placeholder="Hallmark Charge" inputmode="decimal">
-<input id="advance" placeholder="Advance Paid" inputmode="decimal">
+<input id="weight" placeholder="New Gold Weight (g)">
+<input id="rate" placeholder="Gold Rate per gram">
+<input id="making" placeholder="Making Charge">
+<input id="stone" placeholder="Stone Charge">
+<input id="hallmark" placeholder="Hallmark Charge">
+<input id="advance" placeholder="Advance Paid">
 </div>
 
- <select id="oldGiven" onchange="toggleOldGold()">
-  <option value="no">Old Gold Given? - NO</option>
-  <option value="yes">Old Gold Given? - YES</option>
+<div class="section">
+<select id="oldGiven" onchange="toggleOldGold()">
+<option value="no">Old Gold Given? - NO</option>
+<option value="yes">Old Gold Given? - YES</option>
 </select>
+</div>
 
 <div class="section" id="oldSection" style="display:none;">
 <h3>Old Gold Exchange</h3>
-<input id="oldWeight" placeholder="Old Gold Weight (g)" inputmode="decimal">
+
 <select id="oldTouch">
-<option value="0">Select Old Gold Touch</option>
 <option value="91.6">22K</option>
 <option value="75">18K</option>
 <option value="100">24K</option>
 </select>
-<input id="oldRate" placeholder="Old Gold Rate per gram" inputmode="decimal">
-<input id="oldWastage" placeholder="Wastage (%)" inputmode="decimal">
+
+<input id="oldWeight" placeholder="Old Gold Weight (g)">
+<input id="oldRate" placeholder="Old Gold Rate">
 </div>
 
 <button onclick="calculate()">CALCULATE</button>
 
 <h3 id="result">Final Payable: Rs. 0</h3>
-<h3 id="oldvalue">Old Gold Value: Rs. 0</h3>
 <h3 id="balance">Balance: Rs. 0</h3>
 
 <button onclick="saveOrder()">SAVE ORDER</button>
@@ -117,132 +115,106 @@ if(prompt("Enter Password")!="1234"){
 
 <script>
 
-/* ========= CALCULATE ========= */
+/* TOGGLE OLD GOLD */
+function toggleOldGold(){
+ let v=document.getElementById("oldGiven").value;
+ document.getElementById("oldSection").style.display=
+ (v=="yes")?"block":"none";
+
+ if(v=="no"){
+  oldWeight.value=0;
+  oldRate.value=0;
+ }
+}
+
+/* CALCULATE */
 function calculate(){
 
- let w = Number(document.getElementById("weight").value);
- let r = Number(document.getElementById("rate").value);
- let m = Number(document.getElementById("making").value);
- let s = Number(document.getElementById("stone").value);
- let h = Number(document.getElementById("hallmark").value);
- let adv = Number(document.getElementById("advance").value);
+ let w=Number(weight.value);
+ let r=Number(rate.value);
+ let m=Number(making.value);
+ let s=Number(stone.value);
+ let h=Number(hallmark.value);
+ let adv=Number(advance.value);
 
- let ow = Number(document.getElementById("oldWeight").value);
- let ot = Number(document.getElementById("oldTouch").value);
- let orate = Number(document.getElementById("oldRate").value);
+ let ow=Number(oldWeight.value);
+ let ot=Number(oldTouch.value);
+ let orate=Number(oldRate.value);
 
- let newTotal = (w*r)+m+s+h;
+ let newTotal=(w*r)+m+s+h;
 
- let pure = ow*(ot/100);
- let oldGoldValue = pure*orate;
+ let pure=ow*(ot/100);
+ let oldValue=pure*orate;
 
- let finalAmount = newTotal-oldGoldValue;
- let bal = finalAmount-adv;
+ let final=newTotal-oldValue;
+ if(final<0) final=0;
 
- document.getElementById("result").innerText =
- "Final Payable: Rs. "+finalAmount.toFixed(2);
+ let bal=final-adv;
+ if(bal<0) bal=0;
 
- document.getElementById("oldvalue").innerText =
- "Old Gold Value: Rs. "+oldGoldValue.toFixed(2);
-
- document.getElementById("balance").innerText =
- "Balance: Rs. "+bal.toFixed(2);
+ result.innerText="Final Payable: Rs. "+final.toFixed(2);
+ balance.innerText="Balance: Rs. "+bal.toFixed(2);
 }
 
-
-/* ========= SAVE ORDER ========= */
+/* SAVE */
 function saveOrder(){
 
- let w = document.getElementById("weight").value;
- let r = document.getElementById("rate").value;
- let m = document.getElementById("making").value;
- let s = document.getElementById("stone").value;
- let h = document.getElementById("hallmark").value;
- let adv = document.getElementById("advance").value;
-
- let ow = document.getElementById("oldWeight").value;
- let ot = document.getElementById("oldTouch").value;
- let orate = document.getElementById("oldRate").value;
-
- let url =
-"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"+
-"?name="+document.getElementById("name").value+
-"&phone="+document.getElementById("phone").value+
-"&item="+document.getElementById("item").value+
-"&purity="+document.getElementById("purity").value+
-"&weight="+w+
-"&rate="+r+
-"&making="+m+
-"&stone="+s+
-"&hallmark="+h+
-"&oldweight="+ow+
-"&oldtouch="+ot+
-"&oldrate="+orate+
-"&final="+document.getElementById("result").innerText+
-"&advance="+adv+
-"&balance="+document.getElementById("balance").innerText;
+ let url="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"+
+ "?name="+name.value+
+ "&phone="+phone.value+
+ "&item="+item.value+
+ "&purity="+purity.value+
+ "&weight="+weight.value+
+ "&rate="+rate.value+
+ "&making="+making.value+
+ "&stone="+stone.value+
+ "&hallmark="+hallmark.value+
+ "&oldweight="+oldWeight.value+
+ "&oldtouch="+oldTouch.options[oldTouch.selectedIndex].text+
+ "&oldrate="+oldRate.value+
+ "&final="+result.innerText+
+ "&advance="+advance.value+
+ "&balance="+balance.innerText;
 
  window.open(url);
- alert("Saved Successfully");
+ alert("Saved");
 }
 
-
-/* ========= SHARE ========= */
+/* SHARE */
 function shareInvoice(){
-
- let msg =
-"Invoice\n"+
-document.getElementById("result").innerText+"\n"+
-document.getElementById("balance").innerText;
-
+ let msg=
+"SRI MARUTHAMALAI JEWELS WORKS\n"+
+result.innerText+"\n"+
+balance.innerText;
  window.open("https://wa.me/?text="+encodeURIComponent(msg));
 }
 
-
-/* ========= PDF ========= */
+/* PDF */
 function generatePDF(){
 
  if(!window.jspdf){
-   alert("Internet required first time for PDF");
-   return;
+  alert("Internet needed first time");
+  return;
  }
 
- const { jsPDF } = window.jspdf;
- const doc = new jsPDF();
+ const {jsPDF}=window.jspdf;
+ const doc=new jsPDF();
 
+ doc.setFontSize(16);
  doc.text("SRI MARUTHAMALAI JEWELS WORKS",20,20);
- doc.text(document.getElementById("result").innerText,20,40);
- doc.text(document.getElementById("balance").innerText,20,50);
+ doc.text("INVOICE",90,30);
 
- doc.save("invoice.pdf");
-}
+ doc.setFontSize(11);
+ doc.text("Customer: "+name.value,20,45);
+ doc.text("Phone: "+phone.value,20,53);
 
-function toggleOldGold(){
+ doc.text(result.innerText,20,70);
+ doc.text(balance.innerText,20,80);
 
- let v = document.getElementById("oldGiven").value;
-
- if(v=="yes"){
-   document.getElementById("oldSection").style.display="block";
- }else{
-   document.getElementById("oldSection").style.display="none";
-
-   document.getElementById("oldWeight").value=0;
-   document.getElementById("oldTouch").value=0;
-   document.getElementById("oldRate").value=0;
- }
-
+ doc.save("Invoice.pdf");
 }
 
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
