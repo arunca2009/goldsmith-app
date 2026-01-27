@@ -230,11 +230,11 @@ function generatePDF(){
  let finalAmount = total-oldValue;
  let bal = finalAmount-adv;
 
-// LOAD LOGO
-const logo = new Image();
-logo.src = "logo.png";
+ // LOAD LOGO
+ const logo = new Image();
+ logo.src = "logo.png";
 
-logo.onload = function(){
+ logo.onload = function(){
 
  // HEADER WITH LOGO
  doc.addImage(logo,"PNG",15,10,25,25);
@@ -325,6 +325,7 @@ doc.save("Invoice.pdf");
 
 </body>
 </html>
+
 
 
 
