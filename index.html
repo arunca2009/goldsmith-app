@@ -237,6 +237,15 @@ function generatePDF(){
  let balance = finalAmount-adv;
 
  // HEADER
+// LOGO
+const logo = new Image();
+logo.src = "logo.png";
+
+logo.onload = function(){
+
+ doc.addImage(logo,"PNG",15,10,25,25);
+
+ // HEADER
  doc.setFontSize(18);
  doc.text("SRI MARUTHAMALAI JEWELS WORKS",105,20,null,null,"center");
  doc.setFontSize(13);
@@ -267,13 +276,19 @@ function generatePDF(){
 
  let y=112;
 
- function row(name,value){
+function row(name,value,isMoney=true){
    doc.rect(15,y,120,10);
    doc.rect(135,y,60,10);
    doc.text(name,20,y+7);
-   doc.text("Rs. "+value,145,y+7);
+
+   if(isMoney){
+     doc.text("Rs. "+value,145,y+7);
+   }else{
+     doc.text(value,145,y+7);
+   }
+
    y+=10;
- }
+}
 
  row("Gold Value",goldValue.toFixed(2));
  row("Making Charge",m);
@@ -314,6 +329,7 @@ function generatePDF(){
 
 </body>
 </html>
+
 
 
 
