@@ -112,227 +112,111 @@ if(prompt("Enter Password")!="1234"){
 
 <script>
 
-/* CALCULATION */
+/* ========= CALCULATE ========= */
 function calculate(){
 
- let w=Number(weight.value);
- let r=Number(rate.value);
- let m=Number(making.value);
- let s=Number(stone.value);
- let h=Number(hallmark.value);
- let adv=Number(advance.value);
+ let w = Number(document.getElementById("weight").value);
+ let r = Number(document.getElementById("rate").value);
+ let m = Number(document.getElementById("making").value);
+ let s = Number(document.getElementById("stone").value);
+ let h = Number(document.getElementById("hallmark").value);
+ let adv = Number(document.getElementById("advance").value);
+
+ let ow = Number(document.getElementById("oldWeight").value);
+ let ot = Number(document.getElementById("oldTouch").value);
+ let orate = Number(document.getElementById("oldRate").value);
 
  let newTotal = (w*r)+m+s+h;
 
- let ow=Number(oldWeight.value);
- let ot=Number(oldTouch.value);
- let orate=Number(oldRate.value);
- let wast=Number(oldWastage.value);
-
  let pure = ow*(ot/100);
- let finalPure = pure-(pure*(wast/100));
- let oldGoldValue = finalPure*orate;
+ let oldGoldValue = pure*orate;
 
  let finalAmount = newTotal-oldGoldValue;
  let bal = finalAmount-adv;
 
- result.innerText="Final Payable: Rs. "+finalAmount.toFixed(2);
- oldvalue.innerText="Old Gold Value: Rs. "+oldGoldValue.toFixed(2);
- balance.innerText="Balance: Rs. "+bal.toFixed(2);
+ document.getElementById("result").innerText =
+ "Final Payable: Rs. "+finalAmount.toFixed(2);
+
+ document.getElementById("oldvalue").innerText =
+ "Old Gold Value: Rs. "+oldGoldValue.toFixed(2);
+
+ document.getElementById("balance").innerText =
+ "Balance: Rs. "+bal.toFixed(2);
 }
 
-/* SAVE TO GOOGLE SHEET */
+
+/* ========= SAVE ORDER ========= */
 function saveOrder(){
 
- let w=Number(weight.value);
- let r=Number(rate.value);
- let m=Number(making.value);
- let s=Number(stone.value);
- let h=Number(hallmark.value);
- let adv=Number(advance.value);
+ let w = document.getElementById("weight").value;
+ let r = document.getElementById("rate").value;
+ let m = document.getElementById("making").value;
+ let s = document.getElementById("stone").value;
+ let h = document.getElementById("hallmark").value;
+ let adv = document.getElementById("advance").value;
 
- let ow=Number(oldWeight.value);
- let ot=Number(oldTouch.value);
- let orate=Number(oldRate.value);
- let wast=Number(oldWastage.value);
+ let ow = document.getElementById("oldWeight").value;
+ let ot = document.getElementById("oldTouch").value;
+ let orate = document.getElementById("oldRate").value;
 
- let newTotal=(w*r)+m+s+h;
- let pure=ow*(ot/100);
- let finalPure=pure-(pure*(wast/100));
- let oldGoldValue=finalPure*orate;
-
- let finalAmount=newTotal-oldGoldValue;
- let bal=finalAmount-adv;
-
- let url="https://script.google.com/macros/s/AKfycby3a5yDFAusdH6Q9bG6A-qkuAdIw-bYcppPwmHs3qZcWW4qqqj_tzBLN62GoV-iIPsb/exec"+
- "?name="+encodeURIComponent(document.getElementById("name").value)+
- "&phone="+encodeURIComponent(document.getElementById("phone").value)+
- "&item="+item.value+
- "&purity="+purity.value+
- "&weight="+w+
- "&rate="+r+
- "&making="+m+
- "&stone="+s+
- "&hallmark="+h+
- "&oldweight="+ow+
- "&oldtouch="+ot+
- "&oldrate="+orate+
- "&oldwastage="+wast+
- "&oldvalue="+oldGoldValue+
- "&final="+finalAmount+
- "&advance="+adv+
- "&balance="+bal;
+ let url =
+"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"+
+"?name="+document.getElementById("name").value+
+"&phone="+document.getElementById("phone").value+
+"&item="+document.getElementById("item").value+
+"&purity="+document.getElementById("purity").value+
+"&weight="+w+
+"&rate="+r+
+"&making="+m+
+"&stone="+s+
+"&hallmark="+h+
+"&oldweight="+ow+
+"&oldtouch="+ot+
+"&oldrate="+orate+
+"&final="+document.getElementById("result").innerText+
+"&advance="+adv+
+"&balance="+document.getElementById("balance").innerText;
 
  window.open(url);
  alert("Saved Successfully");
 }
 
-/* SHARE WHATSAPP */
+
+/* ========= SHARE ========= */
 function shareInvoice(){
 
- let msg=
-"JEWELLERY INVOICE\n"+
-"Customer: "+document.getElementById("name").value+"\n"+
-"Item: "+item.value+"\n"+
-"Final Payable: Rs. "+result.innerText.split("Rs. ")[1];
+ let msg =
+"Invoice\n"+
+document.getElementById("result").innerText+"\n"+
+document.getElementById("balance").innerText;
 
  window.open("https://wa.me/?text="+encodeURIComponent(msg));
 }
 
-/* PDF */
+
+/* ========= PDF ========= */
 function generatePDF(){
 
  if(!window.jspdf){
-   alert("Connect internet once for PDF");
+   alert("Internet required first time for PDF");
    return;
  }
 
  const { jsPDF } = window.jspdf;
- const doc = new jsPDF("p","mm","a4");
+ const doc = new jsPDF();
 
- let cname = document.getElementById("name").value;
- let phone = document.getElementById("phone").value;
- let itemv = document.getElementById("item").value;
- let purityv = document.getElementById("purity").value;
+ doc.text("SRI MARUTHAMALAI JEWELS WORKS",20,20);
+ doc.text(document.getElementById("result").innerText,20,40);
+ doc.text(document.getElementById("balance").innerText,20,50);
 
- let w = Number(weight.value);
- let r = Number(rate.value);
- let m = Number(making.value);
- let s = Number(stone.value);
- let h = Number(hallmark.value);
- let adv = Number(advance.value);
-
- let ow = Number(oldWeight.value);
- let otSelect = document.getElementById("oldTouch");
- let otText = otSelect.options[otSelect.selectedIndex].text;
- let otValue = Number(otSelect.value);
- let orate = Number(oldRate.value);
-
- let goldValue = w*r;
- let newTotal = goldValue+m+s+h;
-
- let pure = ow*(otValue/100);
- let oldGoldValue = pure*orate;
-
- let finalAmount = newTotal-oldGoldValue;
- let balance = finalAmount-adv;
-
- let now = new Date();
- let billDate = now.toLocaleDateString();
- let billTime = now.toLocaleTimeString();
-
- // LOGO
- const logo = new Image();
- logo.src = "logo.png";
-
- logo.onload = function(){
-
-   // HEADER
-   doc.addImage(logo,"PNG",15,10,25,25);
-   doc.setFontSize(18);
-   doc.text("SRI MARUTHAMALAI JEWELS WORKS",105,20,null,null,"center");
-   doc.setFontSize(12);
-   doc.text("Custom Jewellery Designers",105,28,null,null,"center");
-   doc.text("Phone: 9865739322",105,34,null,null,"center");
-
-   doc.setFontSize(15);
-   doc.text("INVOICE",105,48,null,null,"center");
-
-   // CUSTOMER BOX
-   doc.rect(15,55,180,35);
-
-   doc.setFontSize(11);
-   doc.text("Customer: "+cname,20,65);
-   doc.text("Phone: "+phone,20,73);
-   doc.text("Item: "+itemv,120,65);
-   doc.text("Purity: "+purityv,120,73);
-   doc.text("New Gold Weight: "+w+" g",20,81);
-   doc.text("Gold Rate: Rs. "+r,120,81);
-
-   // TABLE HEADER
-   doc.setFillColor(220,220,220);
-   doc.rect(15,95,120,10,"F");
-   doc.rect(135,95,60,10,"F");
-   doc.text("Description",20,102);
-   doc.text("Amount (Rs.)",145,102);
-
-   let y=112;
-
-   function row(name,value,isMoney=true){
-     doc.rect(15,y,120,10);
-     doc.rect(135,y,60,10);
-     doc.text(name,20,y+7);
-     if(isMoney){
-       doc.text("Rs. "+value,145,y+7);
-     }else{
-       doc.text(value,145,y+7);
-     }
-     y+=10;
-   }
-
-   row("Gold Value",goldValue.toFixed(2));
-   row("Making Charge",m);
-   row("Stone Charge",s);
-   row("Hallmark Charge",h);
-
-   doc.setFillColor(200,255,200);
-   doc.rect(15,y,120,10,"F");
-   doc.rect(135,y,60,10,"F");
-   doc.text("TOTAL",20,y+7);
-   doc.text("Rs. "+newTotal.toFixed(2),145,y+7);
-   y+=15;
-
-   doc.setFontSize(12);
-   doc.text("Old Gold Details",20,y);
-   y+=10;
-
-   row("Old Gold Weight",ow+" g",false);
-   row("Old Gold Touch",otText,false);
-   row("Old Gold Rate",orate);
-   row("Old Gold Value",oldGoldValue.toFixed(2));
-
-   y+=5;
-   row("Final Payable",finalAmount.toFixed(2));
-   row("Advance Paid",adv);
-   row("Balance Amount",balance.toFixed(2));
-
-   y+=8;
-   doc.setFontSize(11);
-   doc.text("Date: "+billDate,20,y);
-   doc.text("Time: "+billTime,120,y);
-
-   doc.setFontSize(11);
-   doc.text("Thank you for your business!",105,285,null,null,"center");
-
-   doc.save("Invoice.pdf");
- };
-
+ doc.save("invoice.pdf");
 }
 
 </script>
 
 </body>
 </html>
+
 
 
 
