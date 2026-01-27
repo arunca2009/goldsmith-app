@@ -236,6 +236,10 @@ function generatePDF(){
  let finalAmount = newTotal-oldGoldValue;
  let balance = finalAmount-adv;
 
+ let now = new Date();
+ let billDate = now.toLocaleDateString();
+ let billTime = now.toLocaleTimeString();
+
  // HEADER
 // LOGO
 const logo = new Image();
@@ -319,6 +323,12 @@ row("Old Gold Value", oldGoldValue.toFixed(2));
  row("Advance Paid",adv);
  row("Balance Amount",balance.toFixed(2));
 
+ y += 8;
+ doc.setFontSize(11);
+ doc.text("Date: "+billDate,20,y);
+ doc.text("Time: "+billTime,120,y);
+
+
  doc.setFontSize(11);
  doc.text("Thank you for your business!",105,285,null,null,"center");
 
@@ -329,6 +339,7 @@ row("Old Gold Value", oldGoldValue.toFixed(2));
 
 </body>
 </html>
+
 
 
 
