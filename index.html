@@ -162,7 +162,7 @@ function calculate(){
 /* SAVE */
 function saveOrder(){
 
- let url="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"+
+ let url="https://script.google.com/macros/s/AKfycby3a5yDFAusdH6Q9bG6A-qkuAdIw-bYcppPwmHs3qZcWW4qqqj_tzBLN62GoV-iIPsb/exec"+
  "?name="+name.value+
  "&phone="+phone.value+
  "&item="+item.value+
@@ -204,8 +204,8 @@ function generatePDF(){
  const doc = new jsPDF("p","mm","a4");
 
  // VALUES
- let cname = name.value;
- let phonev = phone.value;
+ let cname = document.getElementById("name").value;
+ let phonev = document.getElementById("phone").value;
  let itemv = item.value;
  let purityv = purity.value;
 
@@ -229,6 +229,11 @@ function generatePDF(){
 
  let finalAmount = total-oldValue;
  let bal = finalAmount-adv;
+
+ let now = new Date();
+ let billDate = now.toLocaleDateString();
+ let billTime = now.toLocaleTimeString();
+
 
  // LOAD LOGO
  const logo = new Image();
@@ -315,6 +320,17 @@ function generatePDF(){
  row("Advance Paid",adv);
  row("Balance Amount",bal.toFixed(2));
 
+ row("Final Payable",finalAmount.toFixed(2));
+ row("Advance Paid",adv);
+ row("Balance Amount",bal.toFixed(2));
+
+ y += 8;
+ doc.setFontSize(11);
+ doc.text("Date: "+billDate,20,y);
+ doc.text("Time: "+billTime,120,y);
+
+
+
  doc.setFontSize(10);
  doc.text("Thank you for your business!",105,280,null,null,"center");
 
@@ -326,6 +342,7 @@ function generatePDF(){
 
 </body>
 </html>
+
 
 
 
