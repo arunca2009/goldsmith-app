@@ -230,9 +230,24 @@ function generatePDF(){
  let finalAmount = total-oldValue;
  let bal = finalAmount-adv;
 
- // HEADER
+// LOAD LOGO
+const logo = new Image();
+logo.src = "logo.png";
+
+logo.onload = function(){
+
+ // HEADER WITH LOGO
+ doc.addImage(logo,"PNG",15,10,25,25);
+
  doc.setFontSize(16);
  doc.text("SRI MARUTHAMALAI JEWELS WORKS",105,20,null,null,"center");
+ doc.setFontSize(11);
+ doc.text("Custom Jewellery Designers",105,27,null,null,"center");
+ doc.text("Phone: 9865739322",105,33,null,null,"center");
+
+ doc.setFontSize(14);
+ doc.text("INVOICE",105,45,null,null,"center");
+
  doc.setFontSize(11);
  doc.text("Custom Jewellery Designers",105,27,null,null,"center");
  doc.text("Phone: 9865739322",105,33,null,null,"center");
@@ -303,12 +318,13 @@ function generatePDF(){
  doc.setFontSize(10);
  doc.text("Thank you for your business!",105,280,null,null,"center");
 
- doc.save("Invoice.pdf");
-}
+doc.save("Invoice.pdf");
+};   // closes logo.onload
 
 </script>
 
 </body>
 </html>
+
 
 
