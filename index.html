@@ -2,11 +2,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Sri Maruthamalai Jewels Works Records</title>
-
-<!-- jsPDF Library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Goldsmith System</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 body{
@@ -15,46 +15,33 @@ body{
  padding:10px;
  margin:0;
 }
-
 .box{
- background:white;
+ background:#ffffff;
  padding:15px;
  border-radius:12px;
- max-width:500px;
+ max-width:520px;
  margin:auto;
 }
-
-h2{
- text-align:center;
- font-size:22px;
-}
-
+h2{text-align:center;}
 input,select,button{
  width:100%;
- padding:14px;
- margin-top:10px;
+ padding:12px;
+ margin-top:8px;
  font-size:16px;
  border-radius:8px;
  border:1px solid #ccc;
- box-sizing:border-box;
 }
-
 button{
  background:#0a7cff;
  color:white;
  border:none;
  font-size:17px;
 }
-
-h3{
- font-size:18px;
+.section{
+ background:#f7f7f7;
+ padding:10px;
+ border-radius:8px;
  margin-top:12px;
-}
-
-/* MOBILE OPTIMIZATION */
-@media (max-width:600px){
- h2{font-size:20px;}
- input,select,button{font-size:18px;}
 }
 </style>
 </head>
@@ -62,19 +49,21 @@ h3{
 <body>
 
 <script>
-/* PASSWORD PROTECTION */
-if(prompt("Enter Password")!="maruthamalai"){
+if(prompt("Enter Password")!="1234"){
  document.body.innerHTML="ACCESS DENIED";
 }
 </script>
 
 <div class="box">
 
-<h2>Sri Maruthamalai Jewels Works Records</h2>
+<h2>Jewellery Billing System</h2>
 
+<div class="section">
 <input id="name" placeholder="Customer Name">
 <input id="phone" placeholder="Phone Number">
+</div>
 
+<div class="section">
 <select id="item">
 <option>Ring</option>
 <option>Necklace</option>
@@ -88,21 +77,31 @@ if(prompt("Enter Password")!="maruthamalai"){
 <option>18K</option>
 </select>
 
-<input id="weight" placeholder="Weight (grams)">
-<input id="rate" placeholder="Gold Rate per gram">
-<input id="making" placeholder="Making Charge">
-<input id="stone" placeholder="Stone Charge">
-<input id="hallmark" placeholder="Hallmark Charge">
-<input id="advance" placeholder="Advance Paid">
+<input id="weight" placeholder="New Gold Weight (g)" inputmode="decimal">
+<input id="rate" placeholder="Gold Rate per gram" inputmode="decimal">
+<input id="making" placeholder="Making Charge" inputmode="decimal">
+<input id="stone" placeholder="Stone Charge" inputmode="decimal">
+<input id="hallmark" placeholder="Hallmark Charge" inputmode="decimal">
+<input id="advance" placeholder="Advance Paid" inputmode="decimal">
+</div>
 
-<button onclick="calculate()">CALCULATE TOTAL</button>
+<div class="section">
+<h3>Old Gold Exchange</h3>
+<input id="oldWeight" placeholder="Old Gold Weight (g)" inputmode="decimal">
+<input id="oldTouch" placeholder="Old Gold Touch (%)" inputmode="decimal">
+<input id="oldRate" placeholder="Old Gold Rate per gram" inputmode="decimal">
+<input id="oldWastage" placeholder="Wastage (%)" inputmode="decimal">
+</div>
 
-<h3 id="result">Total: ₹0</h3>
-<h3 id="balance">Balance: ₹0</h3>
+<button onclick="calculate()">CALCULATE</button>
+
+<h3 id="result">Final Payable: Rs. 0</h3>
+<h3 id="oldvalue">Old Gold Value: Rs. 0</h3>
+<h3 id="balance">Balance: Rs. 0</h3>
 
 <button onclick="saveOrder()">SAVE ORDER</button>
 <button onclick="shareInvoice()">SHARE INVOICE</button>
-<button onclick="generatePDF()">DOWNLOAD PDF INVOICE</button>
+<button onclick="generatePDF()">DOWNLOAD PDF</button>
 
 </div>
 
@@ -110,6 +109,7 @@ if(prompt("Enter Password")!="maruthamalai"){
 
 /* CALCULATION */
 function calculate(){
+
  let w=Number(weight.value);
  let r=Number(rate.value);
  let m=Number(making.value);
@@ -117,15 +117,26 @@ function calculate(){
  let h=Number(hallmark.value);
  let adv=Number(advance.value);
 
- let goldValue=w*r;
- let total=goldValue+m+s+h;
- let bal=total-adv;
+ let newTotal = (w*r)+m+s+h;
 
- result.innerText="Total: ₹"+total.toFixed(2);
- balance.innerText="Balance: ₹"+bal.toFixed(2);
+ let ow=Number(oldWeight.value);
+ let ot=Number(oldTouch.value);
+ let orate=Number(oldRate.value);
+ let wast=Number(oldWastage.value);
+
+ let pure = ow*(ot/100);
+ let finalPure = pure-(pure*(wast/100));
+ let oldGoldValue = finalPure*orate;
+
+ let finalAmount = newTotal-oldGoldValue;
+ let bal = finalAmount-adv;
+
+ result.innerText="Final Payable: Rs. "+finalAmount.toFixed(2);
+ oldvalue.innerText="Old Gold Value: Rs. "+oldGoldValue.toFixed(2);
+ balance.innerText="Balance: Rs. "+bal.toFixed(2);
 }
 
-/* SAVE ORDER TO GOOGLE SHEET */
+/* SAVE TO GOOGLE SHEET */
 function saveOrder(){
 
  let w=Number(weight.value);
@@ -135,23 +146,37 @@ function saveOrder(){
  let h=Number(hallmark.value);
  let adv=Number(advance.value);
 
- let total=(w*r)+m+s+h;
- let bal=total-adv;
+ let ow=Number(oldWeight.value);
+ let ot=Number(oldTouch.value);
+ let orate=Number(oldRate.value);
+ let wast=Number(oldWastage.value);
 
- let url =
-"https://script.google.com/macros/s/AKfycbxvyEechrdcon6ia40MrRkwnjvz5bB9ZDSKrIVaAZqHAHtjq39kmCseiB9_lR-klrKH/exec"+
-"?name="+encodeURIComponent(document.getElementById("name").value)+
-"&phone="+encodeURIComponent(document.getElementById("phone").value)+
-"&item="+encodeURIComponent(document.getElementById("item").value)+
-"&purity="+encodeURIComponent(document.getElementById("purity").value)+
-"&weight="+w+
-"&rate="+r+
-"&making="+m+
-"&stone="+s+
-"&hallmark="+h+
-"&total="+total+
-"&advance="+adv+
-"&balance="+bal;
+ let newTotal=(w*r)+m+s+h;
+ let pure=ow*(ot/100);
+ let finalPure=pure-(pure*(wast/100));
+ let oldGoldValue=finalPure*orate;
+
+ let finalAmount=newTotal-oldGoldValue;
+ let bal=finalAmount-adv;
+
+ let url="https://script.google.com/macros/s/AKfycby3a5yDFAusdH6Q9bG6A-qkuAdIw-bYcppPwmHs3qZcWW4qqqj_tzBLN62GoV-iIPsb/exec"+
+ "?name="+encodeURIComponent(document.getElementById("name").value)+
+ "&phone="+encodeURIComponent(document.getElementById("phone").value)+
+ "&item="+item.value+
+ "&purity="+purity.value+
+ "&weight="+w+
+ "&rate="+r+
+ "&making="+m+
+ "&stone="+s+
+ "&hallmark="+h+
+ "&oldweight="+ow+
+ "&oldtouch="+ot+
+ "&oldrate="+orate+
+ "&oldwastage="+wast+
+ "&oldvalue="+oldGoldValue+
+ "&final="+finalAmount+
+ "&advance="+adv+
+ "&balance="+bal;
 
  window.open(url);
  alert("Saved Successfully");
@@ -160,139 +185,50 @@ function saveOrder(){
 /* SHARE WHATSAPP */
 function shareInvoice(){
 
- let w=Number(weight.value);
- let r=Number(rate.value);
- let m=Number(making.value);
- let s=Number(stone.value);
- let h=Number(hallmark.value);
- let adv=Number(advance.value);
- let total=(w*r)+m+s+h;
- let bal=total-adv;
-
  let msg=
 "JEWELLERY INVOICE\n"+
-"Customer: "+name.value+"\n"+
-"Phone: "+phone.value+"\n"+
+"Customer: "+document.getElementById("name").value+"\n"+
 "Item: "+item.value+"\n"+
-"Purity: "+purity.value+"\n"+
-"Weight: "+w+" g\n"+
-"Total: ₹"+total+"\n"+
-"Advance: ₹"+adv+"\n"+
-"Balance: ₹"+bal;
+"Final Payable: Rs. "+result.innerText.split("Rs. ")[1];
 
  window.open("https://wa.me/?text="+encodeURIComponent(msg));
 }
 
-/* PDF INVOICE WITH LOGO */
+/* PDF */
 function generatePDF(){
 
- if(!window.jspdf){
-   alert("PDF library not loaded");
-   return;
- }
+ if(!window.jspdf){ alert("Connect to internet once"); return;}
 
- const { jsPDF } = window.jspdf;
- const doc = new jsPDF();
+ const {jsPDF}=window.jspdf;
+ const doc=new jsPDF();
 
- let w = Number(weight.value);
- let r = Number(rate.value);
- let m = Number(making.value);
- let s = Number(stone.value);
- let h = Number(hallmark.value);
- let adv = Number(advance.value);
- let total = (w*r)+m+s+h;
- let bal = total-adv;
+ const img=new Image();
+ img.src="logo.png";
 
- const img = new Image();
- img.src = "logo.png";
+ img.onload=function(){
 
- img.onload = function(){
+ doc.setFontSize(16);
+ doc.text("SRI MARUTHAMALAI JEWELS WORKS",50,20);
+ doc.text("INVOICE",90,35);
 
-   // ===== HEADER =====
-   doc.setFillColor(230,230,230);
-   doc.rect(0,0,210,40,"F");
+ doc.text("Customer: "+document.getElementById("name").value,10,50);
+ doc.text("Phone: "+document.getElementById("phone").value,10,58);
 
-   doc.addImage(img,"PNG",10,5,30,30);
+ doc.text("New Gold Weight: "+weight.value+" g",10,70);
+ doc.text("New Gold Rate: "+rate.value,10,78);
 
-   doc.setFontSize(18);
-   doc.text("SRI MARUTHAMALAI JEWELS WORKS",55,18);
+ doc.text("Old Gold Weight: "+oldWeight.value+" g",10,90);
+ doc.text("Old Gold Value: Rs. "+oldvalue.innerText.split("Rs. ")[1],10,98);
 
-   doc.setFontSize(11);
-   doc.text("Custom Jewellery Designers",55,26);
-   doc.text("Phone: 9865739322",55,32);
+ doc.text("Final Payable: "+result.innerText,10,115);
+ doc.text("Advance: Rs."+advance.value,10,123);
+ doc.text("Balance: "+balance.innerText,10,131);
 
-   // ===== TITLE =====
-   doc.setFontSize(14);
-   doc.text("INVOICE",95,48);
-
-   // ===== CUSTOMER INFO BOX =====
-   doc.rect(10,55,190,30);
-
-   doc.setFontSize(11);
-   doc.text("Customer: "+document.getElementById("name").value,15,65);
-   doc.text("Phone: "+phone.value,15,73);
-   doc.text("Item: "+item.value,120,65);
-   doc.text("Purity: "+purity.value,120,73);
-   doc.text("Weight: "+w+" g",15,81);
-   doc.text("Gold Rate: Rs. "+r,120,81);
-
-   // ===== TABLE HEADER =====
-   doc.setFillColor(200,200,255);
-   doc.rect(10,95,130,10,"F");
-   doc.rect(140,95,60,10,"F");
-
-   doc.setFontSize(11);
-   doc.text("Description",15,102);
-   doc.text("Amount (Rs.)",150,102);
-
-   // ===== TABLE ROWS =====
-   let y = 112;
-
-   function row(text,amount){
-     doc.rect(10,y,130,10);
-     doc.rect(140,y,60,10);
-     doc.text(text,15,y+7);
-     doc.text("Rs. "+amount,150,y+7);
-     y+=10;
-   }
-
-   row("Gold Value", (w*r));
-   row("Making Charge", m);
-   row("Stone Charge", s);
-   row("Hallmark Charge", h);
-
-   // ===== TOTAL SECTION =====
-   doc.setFillColor(220,255,220);
-   doc.rect(10,y,130,10,"F");
-   doc.rect(140,y,60,10,"F");
-   doc.text("TOTAL",15,y+7);
-   doc.text("Rs. "+total,150,y+7);
-   y+=12;
-
-   row("Advance Paid", adv);
-   row("Balance Amount", bal);
-
-   // ===== FOOTER =====
-   doc.setFontSize(10);
-   doc.text("Thank you for your business!",70,280);
-
-   doc.save("Invoice.pdf");
+ doc.save("Invoice.pdf");
  };
-
- img.onerror = function(){
-   alert("logo.png not found in folder");
- };
-
 }
-
 
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
