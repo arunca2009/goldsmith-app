@@ -193,23 +193,110 @@ balance.innerText;
 function generatePDF(){
 
  if(!window.jspdf){
-  alert("Internet needed first time");
-  return;
+   alert("Connect internet once for PDF");
+   return;
  }
 
- const {jsPDF}=window.jspdf;
- const doc=new jsPDF();
+ const { jsPDF } = window.jspdf;
+ const doc = new jsPDF("p","mm","a4");
 
+ // VALUES
+ let cname = name.value;
+ let phonev = phone.value;
+ let itemv = item.value;
+ let purityv = purity.value;
+
+ let w = Number(weight.value);
+ let r = Number(rate.value);
+ let m = Number(making.value);
+ let s = Number(stone.value);
+ let h = Number(hallmark.value);
+ let adv = Number(advance.value);
+
+ let ow = Number(oldWeight.value);
+ let otText = oldTouch.options[oldTouch.selectedIndex].text;
+ let otVal = Number(oldTouch.value);
+ let orate = Number(oldRate.value);
+
+ let goldValue = w*r;
+ let total = goldValue+m+s+h;
+
+ let pure = ow*(otVal/100);
+ let oldValue = pure*orate;
+
+ let finalAmount = total-oldValue;
+ let bal = finalAmount-adv;
+
+ // HEADER
  doc.setFontSize(16);
- doc.text("SRI MARUTHAMALAI JEWELS WORKS",20,20);
- doc.text("INVOICE",90,30);
-
+ doc.text("SRI MARUTHAMALAI JEWELS WORKS",105,20,null,null,"center");
  doc.setFontSize(11);
- doc.text("Customer: "+name.value,20,45);
- doc.text("Phone: "+phone.value,20,53);
+ doc.text("Custom Jewellery Designers",105,27,null,null,"center");
+ doc.text("Phone: 9865739322",105,33,null,null,"center");
 
- doc.text(result.innerText,20,70);
- doc.text(balance.innerText,20,80);
+ doc.setFontSize(14);
+ doc.text("INVOICE",105,45,null,null,"center");
+
+ // CUSTOMER INFO
+ doc.setFontSize(11);
+ doc.text("Customer: "+cname,15,60);
+ doc.text("Phone: "+phonev,15,68);
+ doc.text("Item: "+itemv,120,60);
+ doc.text("Purity: "+purityv,120,68);
+ doc.text("Weight: "+w+" g",15,76);
+ doc.text("Gold Rate: Rs. "+r,120,76);
+
+ // TABLE HEADER
+ doc.setFillColor(220,220,220);
+ doc.rect(15,85,120,10,"F");
+ doc.rect(135,85,60,10,"F");
+ doc.text("Description",20,92);
+ doc.text("Amount (Rs.)",145,92);
+
+ let y=105;
+
+ function row(name,val){
+   doc.rect(15,y,120,10);
+   doc.rect(135,y,60,10);
+   doc.text(name,20,y+7);
+   doc.text("Rs. "+val,145,y+7);
+   y+=10;
+ }
+
+ row("Gold Value",goldValue);
+ row("Making Charge",m);
+ row("Stone Charge",s);
+ row("Hallmark Charge",h);
+
+ doc.setFillColor(200,255,200);
+ doc.rect(15,y,120,10,"F");
+ doc.rect(135,y,60,10,"F");
+ doc.text("TOTAL",20,y+7);
+ doc.text("Rs. "+total,145,y+7);
+ y+=15;
+
+ // OLD GOLD ONLY IF YES
+ if(document.getElementById("oldGiven").value=="yes"){
+
+   doc.setFontSize(12);
+   doc.text("Old Gold Details",20,y);
+   y+=8;
+
+   row("Old Gold Weight",ow+" g");
+   row("Old Gold Touch",otText);
+   row("Old Gold Rate",orate);
+   row("Old Gold Value",oldValue.toFixed(2));
+
+   y+=5;
+ }
+
+ // FINAL
+ row("Final Payable",finalAmount.toFixed(2));
+ row("Advance Paid",adv);
+ row("Balance Amount",bal.toFixed(2));
+
+ doc.setFontSize(10);
+ doc.text("Thank you for your business!",105,280,null,null,"center");
 
  doc.save("Invoice.pdf");
 }
@@ -218,3 +305,4 @@ function generatePDF(){
 
 </body>
 </html>
+
