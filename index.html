@@ -69,7 +69,10 @@ if(prompt("Enter Password")!="1234"){
 <option>Chain</option>
 </select>
 
-<input id="purity" placeholder="New Gold Touch (%) e.g. 91.6" inputmode="decimal">
+<select id="purity">
+<option>22K</option>
+<option>18K</option>
+</select>
 
 <input id="weight" placeholder="New Gold Weight (g)">
 <input id="rate" placeholder="Gold Rate per gram">
@@ -89,7 +92,11 @@ if(prompt("Enter Password")!="1234"){
 <div class="section" id="oldSection" style="display:none;">
 <h3>Old Gold Exchange</h3>
 
-<input id="oldTouch" placeholder="Old Gold Touch (%) e.g. 91.6" inputmode="decimal">
+<select id="oldTouch">
+<option value="91.6">22K</option>
+<option value="75">18K</option>
+<option value="100">24K</option>
+</select>
 
 <input id="oldWeight" placeholder="Old Gold Weight (g)">
 <input id="oldRate" placeholder="Old Gold Rate">
@@ -172,10 +179,8 @@ function saveOrder(){
  "&advance="+advance.value+
  "&balance="+balance.innerText;
 
- fetch(url)
- .then(res=>res.text())
- .then(data=>alert(data))
- .catch(err=>alert("Save Failed"));
+ window.open(url);
+ alert("Saved");
 }
 
 /* SHARE */
@@ -335,18 +340,3 @@ function generatePDF(){
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
