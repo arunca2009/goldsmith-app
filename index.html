@@ -88,7 +88,12 @@ if(prompt("Enter Password")!="1234"){
 <div class="section">
 <h3>Old Gold Exchange</h3>
 <input id="oldWeight" placeholder="Old Gold Weight (g)" inputmode="decimal">
-<input id="oldTouch" placeholder="Old Gold Touch (%)" inputmode="decimal">
+<select id="oldTouch">
+<option value="0">Select Old Gold Touch</option>
+<option value="91.6">22K</option>
+<option value="75">18K</option>
+<option value="100">24K</option>
+</select>
 <input id="oldRate" placeholder="Old Gold Rate per gram" inputmode="decimal">
 <input id="oldWastage" placeholder="Wastage (%)" inputmode="decimal">
 </div>
@@ -232,3 +237,4 @@ function generatePDF(){
 
 </body>
 </html>
+
