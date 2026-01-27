@@ -308,10 +308,10 @@ function row(name,value,isMoney=true){
  doc.text("Old Gold Details",20,y);
  y+=10;
 
- row("Old Gold Weight",ow+" g");
- row("Old Gold Touch",otText);
- row("Old Gold Rate",orate);
- row("Old Gold Value",oldGoldValue.toFixed(2));
+row("Old Gold Weight", ow+" g", false);
+row("Old Gold Touch", otText, false);
+row("Old Gold Rate", orate);
+row("Old Gold Value", oldGoldValue.toFixed(2));
 
  // FINAL SUMMARY
  y+=5;
@@ -323,12 +323,13 @@ function row(name,value,isMoney=true){
  doc.text("Thank you for your business!",105,285,null,null,"center");
 
  doc.save("Invoice.pdf");
-}
+};   // closes logo.onload
 
 </script>
 
 </body>
 </html>
+
 
 
 
