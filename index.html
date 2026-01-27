@@ -85,7 +85,12 @@ if(prompt("Enter Password")!="1234"){
 <input id="advance" placeholder="Advance Paid" inputmode="decimal">
 </div>
 
-<div class="section">
+ <select id="oldGiven" onchange="toggleOldGold()">
+  <option value="no">Old Gold Given? - NO</option>
+  <option value="yes">Old Gold Given? - YES</option>
+</select>
+
+<div class="section" id="oldSection" style="display:none;">
 <h3>Old Gold Exchange</h3>
 <input id="oldWeight" placeholder="Old Gold Weight (g)" inputmode="decimal">
 <select id="oldTouch">
@@ -212,10 +217,27 @@ function generatePDF(){
  doc.save("invoice.pdf");
 }
 
+function toggleOldGold(){
+
+ let v = document.getElementById("oldGiven").value;
+
+ if(v=="yes"){
+   document.getElementById("oldSection").style.display="block";
+ }else{
+   document.getElementById("oldSection").style.display="none";
+
+   document.getElementById("oldWeight").value=0;
+   document.getElementById("oldTouch").value=0;
+   document.getElementById("oldRate").value=0;
+ }
+
+}
+
 </script>
 
 </body>
 </html>
+
 
 
 
