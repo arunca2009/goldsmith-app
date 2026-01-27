@@ -163,7 +163,7 @@ function calculate(){
 function saveOrder(){
 
  let url="https://script.google.com/macros/s/AKfycbxAct5CGEW0RiTju3zpoX0BB8Kx8Jk_9M9SnElajC-x7lvIZc9OP1Ft4NjZLZSVo586/exec"+
- "?name="+name.value+
+ "?name="+encodeURIComponent(document.getElementById("name").value)+
  "&phone="+phone.value+
  "&item="+item.value+
  "&purity="+purity.value+
@@ -340,6 +340,7 @@ function generatePDF(){
 
 </body>
 </html>
+
 
 
 
