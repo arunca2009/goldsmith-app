@@ -322,10 +322,6 @@ function generatePDF(){
  row("Advance Paid",adv);
  row("Balance Amount",bal.toFixed(2));
 
- row("Final Payable",finalAmount.toFixed(2));
- row("Advance Paid",adv);
- row("Balance Amount",bal.toFixed(2));
-
  y += 8;
  doc.setFontSize(11);
  doc.text("Date: "+billDate,20,y);
@@ -344,6 +340,7 @@ function generatePDF(){
 
 </body>
 </html>
+
 
 
 
