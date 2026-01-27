@@ -204,7 +204,9 @@ function generatePDF(){
  const doc = new jsPDF("p","mm","a4");
 
  // VALUES
- let cname = document.getElementById("name").value;
+ let cname = document.getElementById("name") 
+ ? document.getElementById("name").value 
+ : document.querySelector("input[placeholder='Customer Name']").value;
  let phonev = document.getElementById("phone").value;
  let itemv = item.value;
  let purityv = purity.value;
@@ -342,6 +344,7 @@ function generatePDF(){
 
 </body>
 </html>
+
 
 
 
