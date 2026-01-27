@@ -203,12 +203,17 @@ function shareInvoice(){
 function generatePDF(){
 
  if(!window.jspdf){
-   alert("Connect to internet once for PDF");
+   alert("Connect internet once for PDF");
    return;
  }
 
  const { jsPDF } = window.jspdf;
- const doc = new jsPDF();
+ const doc = new jsPDF("p","mm","a4");
+
+ let cname = document.getElementById("name").value;
+ let phone = document.getElementById("phone").value;
+ let itemv = document.getElementById("item").value;
+ let purityv = document.getElementById("purity").value;
 
  let w = Number(weight.value);
  let r = Number(rate.value);
@@ -218,102 +223,97 @@ function generatePDF(){
  let adv = Number(advance.value);
 
  let ow = Number(oldWeight.value);
- let ot = document.getElementById("oldTouch").options[
-           document.getElementById("oldTouch").selectedIndex].text;
+ let otText = document.getElementById("oldTouch").options[
+               document.getElementById("oldTouch").selectedIndex].text;
  let orate = Number(oldRate.value);
 
- let total = (w*r)+m+s+h;
+ let goldValue = w*r;
+ let newTotal = goldValue+m+s+h;
 
- let pure = ow * (Number(document.getElementById("oldTouch").value)/100);
- let oldGoldValue = pure * orate;
+ let pure = ow*(Number(document.getElementById("oldTouch").value)/100);
+ let oldGoldValue = pure*orate;
 
- let finalAmount = total - oldGoldValue;
- let bal = finalAmount - adv;
+ let finalAmount = newTotal-oldGoldValue;
+ let balance = finalAmount-adv;
 
- const img = new Image();
- img.src = "logo.png";
+ // HEADER
+ doc.setFontSize(18);
+ doc.text("SRI MARUTHAMALAI JEWELS WORKS",105,20,null,null,"center");
+ doc.setFontSize(13);
+ doc.text("Custom Jewellery Designers",105,28,null,null,"center");
+ doc.text("Phone: 9865739322",105,34,null,null,"center");
 
- img.onload = function(){
+ doc.setFontSize(15);
+ doc.text("INVOICE",105,48,null,null,"center");
 
-  // ===== HEADER =====
-  doc.addImage(img,"PNG",10,8,25,25);
+ // CUSTOMER BOX
+ doc.rect(15,55,180,35);
 
-  doc.setFontSize(14);
-  doc.text("SRI MARUTHAMALAI JEWELS WORKS",40,15);
-  doc.setFontSize(10);
-  doc.text("Custom Jewellery Designers",40,21);
-  doc.text("Phone: 9865739322",40,26);
+ doc.setFontSize(11);
+ doc.text("Customer: "+cname,20,65);
+ doc.text("Phone: "+phone,20,73);
+ doc.text("Item: "+itemv,120,65);
+ doc.text("Purity: "+purityv,120,73);
+ doc.text("New Gold Weight: "+w+" g",20,81);
+ doc.text("Gold Rate: Rs. "+r,120,81);
 
-  doc.setFontSize(13);
-  doc.text("INVOICE",90,38);
+ // TABLE HEADER
+ doc.setFillColor(220,220,220);
+ doc.rect(15,95,120,10,"F");
+ doc.rect(135,95,60,10,"F");
 
-  doc.line(10,42,200,42);
+ doc.text("Description",20,102);
+ doc.text("Amount (Rs.)",145,102);
 
-  // ===== CUSTOMER INFO =====
-  doc.setFontSize(11);
-  doc.text("Customer: "+document.getElementById("name").value,10,52);
-  doc.text("Phone: "+document.getElementById("phone").value,10,60);
-  doc.text("Item: "+item.value,120,52);
-  doc.text("Purity: "+purity.value,120,60);
-  doc.text("Weight: "+w+" g",10,68);
-  doc.text("Gold Rate: Rs. "+r,120,68);
+ let y=112;
 
-  doc.line(10,72,200,72);
+ function row(name,value){
+   doc.rect(15,y,120,10);
+   doc.rect(135,y,60,10);
+   doc.text(name,20,y+7);
+   doc.text("Rs. "+value,145,y+7);
+   y+=10;
+ }
 
-  // ===== TABLE HEADER =====
-  doc.setFontSize(11);
-  doc.text("Description",15,82);
-  doc.text("Amount (Rs.)",150,82);
+ row("Gold Value",goldValue.toFixed(2));
+ row("Making Charge",m);
+ row("Stone Charge",s);
+ row("Hallmark Charge",h);
 
-  doc.line(10,85,200,85);
+ // TOTAL
+ doc.setFillColor(200,255,200);
+ doc.rect(15,y,120,10,"F");
+ doc.rect(135,y,60,10,"F");
+ doc.text("TOTAL",20,y+7);
+ doc.text("Rs. "+newTotal.toFixed(2),145,y+7);
+ y+=15;
 
-  let y = 95;
+ // OLD GOLD SECTION
+ doc.setFontSize(12);
+ doc.text("Old Gold Details",20,y);
+ y+=10;
 
-  function row(name,value){
-    doc.text(name,15,y);
-    doc.text("Rs. "+value,150,y);
-    y += 10;
-  }
+ row("Old Gold Weight",ow+" g");
+ row("Old Gold Touch",otText);
+ row("Old Gold Rate",orate);
+ row("Old Gold Value",oldGoldValue.toFixed(2));
 
-  row("Gold Value", (w*r));
-  row("Making Charge", m);
-  row("Stone Charge", s);
-  row("Hallmark Charge", h);
+ // FINAL SUMMARY
+ y+=5;
+ row("Final Payable",finalAmount.toFixed(2));
+ row("Advance Paid",adv);
+ row("Balance Amount",balance.toFixed(2));
 
-  doc.line(10,y-5,200,y-5);
+ doc.setFontSize(11);
+ doc.text("Thank you for your business!",105,285,null,null,"center");
 
-  row("TOTAL", total);
-
-  // ===== OLD GOLD SECTION =====
-  y += 5;
-  doc.setFontSize(11);
-  doc.text("Old Gold Details",15,y);
-  y += 10;
-
-  row("Old Gold Weight", ow+" g");
-  row("Old Gold Touch", ot);
-  row("Old Gold Rate", orate);
-  row("Old Gold Value", oldGoldValue.toFixed(2));
-
-  doc.line(10,y-5,200,y-5);
-
-  // ===== FINAL SUMMARY =====
-  row("Advance Paid", adv);
-  row("Balance Amount", bal.toFixed(2));
-
-  doc.line(10,y+2,200,y+2);
-
-  doc.setFontSize(10);
-  doc.text("Thank you for your business!",70,y+15);
-
-  doc.save("Invoice.pdf");
- };
-
+ doc.save("Invoice.pdf");
 }
 
 </script>
 
 </body>
 </html>
+
 
 
