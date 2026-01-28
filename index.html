@@ -164,7 +164,7 @@
           </div>
         </div>
 
-        <div id="oldSection" class="card" style="margin-top:12px">
+        <div id="oldSection" class="card" style="margin-top:12px; display:none">
           <h2>Old Gold Details (only if Yes)</h2>
           <div class="row">
             <div>
@@ -218,7 +218,7 @@
 
 <script>
   // 1) Put your Apps Script Web App URL here after deployment
-  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwNw8GpDnhNRAjlM8ZyfGeQPBDbBhTGM01GIz0aywYgkgQ17uD5tGkzO22p9vEw8qk7Hg/exec"; // e.g. "https://script.google.com/macros/s/XXXXX/exec"
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw1kllJyT90zWtl9xhdBuiCBN1rZQ6MVUMBYlHLDs0tPLEGCm6C9GcweYTHI0GUdUP_rA/exec"; // e.g. "https://script.google.com/macros/s/XXXXX/exec"
 
   const $ = (id) => document.getElementById(id);
 
@@ -334,7 +334,6 @@
 
     setMsg("Saving to Google Sheet...", "");
     try{
-      // IMPORTANT: text/plain avoids CORS preflight for Apps Script
       const res = await fetch(APPS_SCRIPT_URL, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -346,6 +345,10 @@
       } else {
         setMsg("Save failed: " + (data?.error || "Unknown error"), "error");
       }
+    } catch (e){
+      setMsg("Save error: " + e.message, "error");
+    }
+  }
     } catch (e){
       setMsg("Save error: " + e.message, "error");
     }
@@ -568,11 +571,23 @@
   function syncOldSection(){
     const on = $("oldToggle").checked;
     $("oldSection").style.display = on ? "block" : "none";
+    if (!on) {
+      $("oldRate").value = 0;
+      $("oldWeight").value = 0;
+      $("oldPurity").value = 91.6;
+      $("oldWastageAmt").value = 0;
+      $("oldValue").textContent = money(0);
+    }
+    calc();
+  }{
+    const on = $("oldToggle").checked;
+    $("oldSection").style.display = on ? "block" : "none";
     calc();
   }
 
   // Init
   $("invoiceDate").value = todayISO();
+  $("oldToggle").checked = false;
   syncOldSection();
   calc();
 
