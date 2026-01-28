@@ -184,6 +184,15 @@ function saveOrder(){
  let finalText = document.getElementById("result").innerText || "";
  let balanceText = document.getElementById("balance").innerText || "";
 
+ let ow = Number(document.getElementById("oldWeight").value || 0);
+ let ot = Number(document.getElementById("oldTouch").value || 0);
+ let orate = Number(document.getElementById("oldRate").value || 0);
+ let oldWastageVal = Number(document.getElementById("oldWastage").value || 0);
+
+ let pure = ow * (ot/100);
+ let oldValue = (pure * orate) - oldWastageVal;
+ if(oldValue < 0) oldValue = 0;
+
  let url =
 "https://script.google.com/macros/s/AKfycbz4utLXErNoVjLOjPfVAIl--s-5EEXhQDD0yGCGeUqZq3jDTPcgXy17rgS1lTBex6PD/exec"+
 "?name="+encodeURIComponent(nameVal)+
@@ -370,3 +379,4 @@ function generatePDF(){
 
 </body>
 </html>
+
