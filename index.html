@@ -3,24 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Goldsmith Billing</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
-body{font-family:Arial;background:#f2f2f2;padding:10px}
-.box{background:#fff;padding:15px;border-radius:10px;max-width:520px;margin:auto}
-input,select,button{width:100%;padding:10px;margin-top:8px;font-size:15px}
-button{background:#0a7cff;color:white;border:none;border-radius:6px}
-.section{background:#f7f7f7;padding:10px;margin-top:10px;border-radius:6px}
-h2{text-align:center}
+body{
+ font-family: Arial, sans-serif;
+ background:#f2f2f2;
+ padding:10px;
+}
+.box{
+ background:#fff;
+ padding:15px;
+ border-radius:12px;
+ max-width:520px;
+ margin:auto;
+}
+input,select,button{
+ width:100%;
+ padding:12px;
+ margin-top:8px;
+ font-size:16px;
+ border-radius:8px;
+ border:1px solid #ccc;
+}
+button{
+ background:#0a7cff;
+ color:white;
+ border:none;
+}
+h2{text-align:center;}
+.section{
+ background:#f7f7f7;
+ padding:10px;
+ border-radius:8px;
+ margin-top:10px;
+}
 </style>
 </head>
 
 <body>
 
 <script>
-if(prompt("Enter Password")!=="1234"){
+if(prompt("Enter Password")!="1234"){
  document.body.innerHTML="ACCESS DENIED";
 }
 </script>
@@ -42,8 +69,9 @@ if(prompt("Enter Password")!=="1234"){
 <option>Chain</option>
 </select>
 
-<input id="purity" placeholder="New Gold Purity (%)">
-<input id="weight" placeholder="Weight (g)">
+<input id="purity" placeholder="New Gold Purity (%) e.g. 91.6">
+
+<input id="weight" placeholder="New Gold Weight (g)">
 <input id="rate" placeholder="Gold Rate per gram">
 <input id="making" placeholder="Making Charge">
 <input id="newWastage" placeholder="New Gold Wastage (Rs.)">
@@ -54,78 +82,128 @@ if(prompt("Enter Password")!=="1234"){
 
 <div class="section">
 <select id="oldGiven" onchange="toggleOldGold()">
-<option value="no">Old Gold Given? NO</option>
-<option value="yes">Old Gold Given? YES</option>
+<option value="no">Old Gold Given? - NO</option>
+<option value="yes">Old Gold Given? - YES</option>
 </select>
 </div>
 
-<div class="section" id="oldSection" style="display:none">
-<input id="oldTouch" placeholder="Old Gold Purity (%)">
+<div class="section" id="oldSection" style="display:none;">
+<h3>Old Gold Exchange</h3>
+
+<input id="oldTouch" placeholder="Old Gold Purity (%) e.g. 91.6">
+
 <input id="oldWeight" placeholder="Old Gold Weight (g)">
 <input id="oldRate" placeholder="Old Gold Rate">
 <input id="oldWastage" placeholder="Old Gold Wastage (Rs.)">
 </div>
 
-<button type="button" onclick="calculate()">CALCULATE</button>
+<button onclick="calculate()">CALCULATE</button>
 
 <h3 id="result">Final Payable: Rs. 0</h3>
 <h3 id="balance">Balance: Rs. 0</h3>
 
-<button type="button" onclick="saveOrder()">SAVE ORDER</button>
-<button type="button" onclick="shareInvoice()">SHARE INVOICE</button>
-<button type="button" onclick="generatePDF()">DOWNLOAD PDF</button>
+<button onclick="saveOrder()">SAVE ORDER</button>
+<button onclick="shareInvoice()">SHARE INVOICE</button>
+<button onclick="generatePDF()">DOWNLOAD PDF</button>
 
 </div>
 
 <script>
 
-/* TOGGLE */
+/* TOGGLE OLD GOLD */
 function toggleOldGold(){
- document.getElementById("oldSection").style.display =
- document.getElementById("oldGiven").value==="yes" ? "block":"none";
+ let v=document.getElementById("oldGiven").value;
+ document.getElementById("oldSection").style.display=
+ (v=="yes")?"block":"none";
+
+ if(v=="no"){
+  oldWeight.value=0;
+  oldRate.value=0;
+ }
 }
 
 /* CALCULATE */
 function calculate(){
 
- let w=Number(weight.value);
- let p=Number(purity.value);
- let r=Number(rate.value);
- let m=Number(making.value);
- let nw=Number(newWastage.value);
- let s=Number(stone.value);
- let h=Number(hallmark.value);
- let adv=Number(advance.value);
+ let w = Number(weight.value);
+ let r = Number(rate.value);
+ let m = Number(making.value);
+ let s = Number(stone.value);
+ let h = Number(hallmark.value);
+ let adv = Number(advance.value);
 
- let ow=Number(oldWeight.value);
- let ot=Number(oldTouch.value);
- let orate=Number(oldRate.value);
- let owast=Number(oldWastage.value);
+ let ow = Number(oldWeight.value);
+ let ot = Number(document.getElementById("oldTouch").value);
+ let wast = Number(oldWastage.value);
+ let orate = Number(oldRate.value);
 
- let newTotal=((w*(p/100))*r)+m+nw+s+h;
+ // NEW GOLD PURITY
+ let p = Number(document.getElementById("purity").value);
 
- let oldValue=((ow*(ot/100))*orate)-owast;
- if(oldValue<0) oldValue=0;
+ // NEW GOLD VALUE
+ let newWast = Number(document.getElementById("newWastage").value);
+ let newTotal = ((w * (p/100)) * r) + m + s + h + newWast;
 
- let final=newTotal-oldValue;
- if(final<0) final=0;
+ // OLD GOLD VALUE
+ let pure = ow * (ot/100);
+ let oldValue = (pure * orate) - wast;
 
- let bal=final-adv;
- if(bal<0) bal=0;
 
- result.innerText="Final Payable: Rs. "+final.toFixed(2);
- balance.innerText="Balance: Rs. "+bal.toFixed(2);
+ // FINAL
+ let final = newTotal - oldValue;
+ if(final < 0) final = 0;
+
+ let bal = final - adv;
+ if(bal < 0) bal = 0;
+
+ result.innerText = "Final Payable: Rs. " + final.toFixed(2);
+ balance.innerText = "Balance: Rs. " + bal.toFixed(2);
 }
+
 
 /* SAVE */
 function saveOrder(){
 
- let url=
+ let nameVal = document.getElementById("name").value || "";
+ let phoneVal = document.getElementById("phone").value || "";
+ let itemVal = document.getElementById("item").value || "";
+ let purityVal = document.getElementById("purity").value || "";
+ let weightVal = document.getElementById("weight").value || 0;
+ let rateVal = document.getElementById("rate").value || 0;
+ let makingVal = document.getElementById("making").value || 0;
+ let stoneVal = document.getElementById("stone").value || 0;
+ let hallmarkVal = document.getElementById("hallmark").value || 0;
+ let advanceVal = document.getElementById("advance").value || 0;
+
+ let oldWeightVal = document.getElementById("oldWeight").value || 0;
+ let oldTouchVal = document.getElementById("oldTouch").value || 0;
+ let oldRateVal = document.getElementById("oldRate").value || 0;
+ let newWastageVal = document.getElementById("newWastage").value || 0;
+ let oldWastageVal = document.getElementById("oldWastage").value || 0;
+
+ let finalText = document.getElementById("result").innerText || "";
+ let balanceText = document.getElementById("balance").innerText || "";
+
+ let url =
 "https://script.google.com/macros/s/AKfycbz4utLXErNoVjLOjPfVAIl--s-5EEXhQDD0yGCGeUqZq3jDTPcgXy17rgS1lTBex6PD/exec"+
-"?name="+encodeURIComponent(name.value)+
-"&phone="+encodeURIComponent(phone.value)+
-"&final="+encodeURIComponent(result.innerText)+
-"&balance="+encodeURIComponent(balance.innerText);
+"?name="+encodeURIComponent(nameVal)+
+"&phone="+encodeURIComponent(phoneVal)+
+"&item="+encodeURIComponent(itemVal)+
+"&purity="+encodeURIComponent(purityVal)+
+"&weight="+weightVal+
+"&rate="+rateVal+
+"&making="+makingVal+
+"&stone="+stoneVal+
+"&hallmark="+hallmarkVal+
+"&oldweight="+oldWeightVal+
+"&oldtouch="+oldTouchVal+
+"&oldrate="+oldRateVal+
+"&oldvalue="+oldValue+
+"&newwastage="+newWastageVal+
+"&oldwastage="+oldWastageVal+
+"&final="+encodeURIComponent(finalText)+
+"&advance="+advanceVal+
+"&balance="+encodeURIComponent(balanceText);
 
  fetch(url)
  .then(r=>r.text())
@@ -133,9 +211,13 @@ function saveOrder(){
  .catch(e=>alert("Save Failed"));
 }
 
+
 /* SHARE */
 function shareInvoice(){
- let msg="INVOICE\n"+result.innerText+"\n"+balance.innerText;
+ let msg=
+"SRI MARUTHAMALAI JEWELS WORKS\n"+
+result.innerText+"\n"+
+balance.innerText;
  window.open("https://wa.me/?text="+encodeURIComponent(msg));
 }
 
@@ -143,29 +225,158 @@ function shareInvoice(){
 function generatePDF(){
 
  if(!window.jspdf){
-  alert("Internet required first time");
-  return;
+   alert("Connect internet once for PDF");
+   return;
  }
 
- const {jsPDF}=window.jspdf;
- const doc=new jsPDF();
+ const { jsPDF } = window.jspdf;
+ const doc = new jsPDF("p","mm","a4");
 
- let now=new Date();
+ // VALUES
+ let cname = document.getElementById("name") 
+ ? document.getElementById("name").value 
+ : document.querySelector("input[placeholder='Customer Name']").value;
+ let phonev = document.getElementById("phone").value;
+ let itemv = item.value;
+ let purityv = purity.value;
+
+ let w = Number(weight.value);
+ let r = Number(rate.value);
+ let m = Number(making.value);
+ let s = Number(stone.value);
+ let h = Number(hallmark.value);
+ let adv = Number(advance.value);
+
+ let ow = Number(oldWeight.value);
+ let otText = document.getElementById("oldTouch").value;
+ let otVal = Number(oldTouch.value);
+ let orate = Number(oldRate.value);
+
+ let goldValue = w*r;
+ let total = goldValue+m+s+h;
+
+ let pure = ow*(otVal/100);
+ let oldValue = pure*orate;
+
+ let finalAmount = total-oldValue;
+ let bal = finalAmount-adv;
+
+ let now = new Date();
+ let billDate = now.toLocaleDateString();
+ let billTime = now.toLocaleTimeString();
+
+
+ // LOAD LOGO
+ const logo = new Image();
+ logo.src = "logo.png";
+
+ logo.onload = function(){
+
+ // HEADER WITH LOGO
+ doc.addImage(logo,"PNG",15,10,25,25);
 
  doc.setFontSize(16);
- doc.text("SRI MARUTHAMALAI JEWELS WORKS",20,20);
- doc.setFontSize(12);
- doc.text("Customer: "+name.value,20,40);
- doc.text("Phone: "+phone.value,20,50);
- doc.text(result.innerText,20,70);
- doc.text(balance.innerText,20,80);
- doc.text("Date: "+now.toLocaleDateString(),20,100);
- doc.text("Time: "+now.toLocaleTimeString(),20,110);
+ doc.text("SRI MARUTHAMALAI JEWELS WORKS",105,20,null,null,"center");
+ doc.setFontSize(11);
+ doc.text("Custom Jewellery Designers",105,27,null,null,"center");
+ doc.text("Phone: 9865739322",105,33,null,null,"center");
+
+ doc.setFontSize(14);
+ doc.text("INVOICE",105,45,null,null,"center");
+
+ doc.setFontSize(11);
+ doc.text("Custom Jewellery Designers",105,27,null,null,"center");
+ doc.text("Phone: 9865739322",105,33,null,null,"center");
+
+ doc.setFontSize(14);
+ doc.text("INVOICE",105,45,null,null,"center");
+
+ // CUSTOMER INFO
+ doc.setFontSize(11);
+ doc.text("Customer: "+cname,15,60);
+ doc.text("Phone: "+phonev,15,68);
+ doc.text("Item: "+itemv,120,60);
+ doc.text("Purity: "+purityv,120,68);
+ doc.text("Weight: "+w+" g",15,76);
+ doc.text("Gold Rate: Rs. "+r,120,76);
+
+ // TABLE HEADER
+ doc.setFillColor(220,220,220);
+ doc.rect(15,85,120,10,"F");
+ doc.rect(135,85,60,10,"F");
+ doc.text("Description",20,92);
+ doc.text("Amount (Rs.)",145,92);
+
+ let y=105;
+
+ function row(name,val){
+   doc.rect(15,y,120,10);
+   doc.rect(135,y,60,10);
+   doc.text(name,20,y+7);
+   doc.text("Rs. "+val,145,y+7);
+   y+=10;
+ }
+
+ row("Gold Value",goldValue);
+ row("Making Charge",m);
+ row("New Gold Wastage",newWast);
+ row("Stone Charge",s);
+ row("Hallmark Charge",h);
+
+ doc.setFillColor(200,255,200);
+ doc.rect(15,y,120,10,"F");
+ doc.rect(135,y,60,10,"F");
+ doc.text("TOTAL",20,y+7);
+ doc.text("Rs. "+total,145,y+7);
+ y+=15;
+
+ // OLD GOLD ONLY IF YES
+ if(document.getElementById("oldGiven").value=="yes"){
+
+   doc.setFontSize(12);
+   doc.text("Old Gold Details",20,y);
+   y+=8;
+
+ row("Old Gold Weight",ow+" g");
+ row("Old Gold Touch",otText);
+ row("Old Gold Wastage",wast);
+ row("Old Gold Rate",orate);
+ row("Old Gold Value",oldValue.toFixed(2));
+
+
+   y+=5;
+ }
+
+ // FINAL
+ row("Final Payable",finalAmount.toFixed(2));
+ row("Advance Paid",adv);
+ row("Balance Amount",bal.toFixed(2));
+
+ y += 8;
+ doc.setFontSize(11);
+ doc.text("Date: "+billDate,20,y);
+ doc.text("Time: "+billTime,120,y);
+
+
+
+ doc.setFontSize(10);
+ doc.text("Thank you for your business!",105,280,null,null,"center");
 
  doc.save("Invoice.pdf");
+ };   // closes logo.onload
 }
 
 </script>
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
