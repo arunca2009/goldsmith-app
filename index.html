@@ -218,7 +218,7 @@
 
 <script>
   // 1) Put your Apps Script Web App URL here after deployment
-  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw1kllJyT90zWtl9xhdBuiCBN1rZQ6MVUMBYlHLDs0tPLEGCm6C9GcweYTHI0GUdUP_rA/exec"; // e.g. "https://script.google.com/macros/s/XXXXX/exec"
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwNw8GpDnhNRAjlM8ZyfGeQPBDbBhTGM01GIz0aywYgkgQ17uD5tGkzO22p9vEw8qk7Hg/exec"; // e.g. "https://script.google.com/macros/s/XXXXX/exec"
 
   const $ = (id) => document.getElementById(id);
 
@@ -330,6 +330,26 @@
       setMsg("Add your Apps Script Web App URL inside APPS_SCRIPT_URL in index.html", "error");
       return;
     }
+    const payload = readForm();
+
+    setMsg("Saving to Google Sheet...", "");
+    try{
+      // IMPORTANT: text/plain avoids CORS preflight for Apps Script
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data && data.ok){
+        setMsg("Saved successfully ✔ Row: " + data.row, "ok");
+      } else {
+        setMsg("Save failed: " + (data?.error || "Unknown error"), "error");
+      }
+    } catch (e){
+      setMsg("Save error: " + e.message, "error");
+    }
+  }
     const payload = readForm();
 
     setMsg("Saving to Google Sheet...", "");
