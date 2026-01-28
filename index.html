@@ -124,34 +124,40 @@ function toggleOldGold(){
 /* CALCULATE */
 function calculate(){
 
- let w=Number(weight.value);
- let r=Number(rate.value);
- let p = Number(document.getElementById("purity").value);
- let m=Number(making.value);
- let s=Number(stone.value);
- let h=Number(hallmark.value);
- let adv=Number(advance.value);
+ let w = Number(weight.value);
+ let r = Number(rate.value);
+ let m = Number(making.value);
+ let s = Number(stone.value);
+ let h = Number(hallmark.value);
+ let adv = Number(advance.value);
 
- let ow=Number(oldWeight.value);
+ let ow = Number(oldWeight.value);
  let ot = Number(document.getElementById("oldTouch").value);
- let orate=Number(oldRate.value);
-
- let newTotal=((w*(Number(document.getElementById("purity").value)/100))*r)+m+s+h;
-
  let wast = Number(oldWastage.value);
- let pure = ow*(ot/100);
+ let orate = Number(oldRate.value);
+
+ // NEW GOLD PURITY
+ let p = Number(document.getElementById("purity").value);
+
+ // NEW GOLD VALUE
+ let newTotal = ((w * (p/100)) * r) + m + s + h;
+
+ // OLD GOLD VALUE
+ let pure = ow * (ot/100);
  let finalPure = pure - (pure*(wast/100));
- let oldValue = finalPure*orate;
+ let oldValue = finalPure * orate;
 
- let final=newTotal-oldValue;
- if(final<0) final=0;
+ // FINAL
+ let final = newTotal - oldValue;
+ if(final < 0) final = 0;
 
- let bal=final-adv;
- if(bal<0) bal=0;
+ let bal = final - adv;
+ if(bal < 0) bal = 0;
 
- result.innerText="Final Payable: Rs. "+final.toFixed(2);
- balance.innerText="Balance: Rs. "+bal.toFixed(2);
+ result.innerText = "Final Payable: Rs. " + final.toFixed(2);
+ balance.innerText = "Balance: Rs. " + bal.toFixed(2);
 }
+
 
 /* SAVE */
 function saveOrder(){
@@ -334,4 +340,5 @@ function generatePDF(){
 
 </body>
 </html>
+
 
