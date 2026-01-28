@@ -162,26 +162,48 @@ function calculate(){
 /* SAVE */
 function saveOrder(){
 
- let url="https://script.google.com/macros/s/AKfycbxAct5CGEW0RiTju3zpoX0BB8Kx8Jk_9M9SnElajC-x7lvIZc9OP1Ft4NjZLZSVo586/exec"+
- "?name="+encodeURIComponent(document.getElementById("name").value)+
- "&phone="+phone.value+
- "&item="+item.value+
- "&purity="+purity.value+
- "&weight="+weight.value+
- "&rate="+rate.value+
- "&making="+making.value+
- "&stone="+stone.value+
- "&hallmark="+hallmark.value+
- "&oldweight="+oldWeight.value+
- "&oldtouch="+encodeURIComponent(otText)+
- "&oldrate="+oldRate.value+
- "&final="+result.innerText+
- "&advance="+advance.value+
- "&balance="+balance.innerText;
+ let nameVal = document.getElementById("name").value || "";
+ let phoneVal = document.getElementById("phone").value || "";
+ let itemVal = document.getElementById("item").value || "";
+ let purityVal = document.getElementById("purity").value || "";
+ let weightVal = document.getElementById("weight").value || 0;
+ let rateVal = document.getElementById("rate").value || 0;
+ let makingVal = document.getElementById("making").value || 0;
+ let stoneVal = document.getElementById("stone").value || 0;
+ let hallmarkVal = document.getElementById("hallmark").value || 0;
+ let advanceVal = document.getElementById("advance").value || 0;
 
- window.open(url);
- alert("Saved");
+ let oldWeightVal = document.getElementById("oldWeight").value || 0;
+ let oldTouchVal = document.getElementById("oldTouch").value || 0;
+ let oldRateVal = document.getElementById("oldRate").value || 0;
+
+ let finalText = document.getElementById("result").innerText || "";
+ let balanceText = document.getElementById("balance").innerText || "";
+
+ let url =
+"https://script.google.com/macros/s/AKfycbxAct5CGEW0RiTju3zpoX0BB8Kx8Jk_9M9SnElajC-x7lvIZc9OP1Ft4NjZLZSVo586/exec"+
+"?name="+encodeURIComponent(nameVal)+
+"&phone="+encodeURIComponent(phoneVal)+
+"&item="+encodeURIComponent(itemVal)+
+"&purity="+encodeURIComponent(purityVal)+
+"&weight="+weightVal+
+"&rate="+rateVal+
+"&making="+makingVal+
+"&stone="+stoneVal+
+"&hallmark="+hallmarkVal+
+"&oldweight="+oldWeightVal+
+"&oldtouch="+oldTouchVal+
+"&oldrate="+oldRateVal+
+"&final="+encodeURIComponent(finalText)+
+"&advance="+advanceVal+
+"&balance="+encodeURIComponent(balanceText);
+
+ fetch(url)
+ .then(r=>r.text())
+ .then(t=>alert(t))
+ .catch(e=>alert("Save Failed"));
 }
+
 
 /* SHARE */
 function shareInvoice(){
@@ -340,6 +362,7 @@ function generatePDF(){
 
 </body>
 </html>
+
 
 
 
