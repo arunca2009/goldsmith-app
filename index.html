@@ -89,11 +89,7 @@ if(prompt("Enter Password")!="1234"){
 <div class="section" id="oldSection" style="display:none;">
 <h3>Old Gold Exchange</h3>
 
-<select id="oldTouch">
-<option value="91.6">22K</option>
-<option value="75">18K</option>
-<option value="100">24K</option>
-</select>
+<input id="oldTouch" placeholder="Old Gold Purity (%) e.g. 91.6">
 
 <input id="oldWeight" placeholder="Old Gold Weight (g)">
 <input id="oldRate" placeholder="Old Gold Rate">
@@ -136,7 +132,7 @@ function calculate(){
  let adv=Number(advance.value);
 
  let ow=Number(oldWeight.value);
- let ot=Number(oldTouch.value);
+ let ot = Number(document.getElementById("oldTouch").value);
  let orate=Number(oldRate.value);
 
  let newTotal=(w*r)+m+s+h;
@@ -216,7 +212,7 @@ function generatePDF(){
  let adv = Number(advance.value);
 
  let ow = Number(oldWeight.value);
- let otText = oldTouch.options[oldTouch.selectedIndex].text;
+ let otText = document.getElementById("oldTouch").value + " %";
  let otVal = Number(oldTouch.value);
  let orate = Number(oldRate.value);
 
@@ -337,4 +333,5 @@ function generatePDF(){
 
 </body>
 </html>
+
 
