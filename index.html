@@ -336,7 +336,7 @@
     try{
       const res = await fetch(APPS_SCRIPT_URL, {
         method: "POST",
-        mode: "cors",
+        
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify(payload)
       });
@@ -483,7 +483,7 @@
       y += 16;
       doc.text(`Old Gold Touch: ${payload.oldGoldPurity}`, 28, y);
       y += 16;
-      doc.text(`Old Gold Wastage: ${payload.oldGoldWastage} %`, 28, y);
+      doc.text(`Old Gold Wastage: Rs. ${payload.oldGoldWastage}`, 28, y);
       y += 16;
       doc.text(`Old Gold Rate: Rs. ${payload.oldGoldRate}`, 28, y);
       y += 16;
@@ -569,4 +569,3 @@
 </script>
 </body>
 </html>
-
