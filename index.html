@@ -185,7 +185,7 @@ function saveOrder(){
  let balanceText = document.getElementById("balance").innerText || "";
 
  let url =
-"https://script.google.com/macros/s/AKfycbz0NtcDYq3btB8wxkRxewSA_oW23CI_b23rhf5GF-1LFGOlkMI6L54tFwITNJBvsS_w/exec"+
+"https://script.google.com/macros/s/AKfycbz4utLXErNoVjLOjPfVAIl--s-5EEXhQDD0yGCGeUqZq3jDTPcgXy17rgS1lTBex6PD/exec"+
 "?name="+encodeURIComponent(nameVal)+
 "&phone="+encodeURIComponent(phoneVal)+
 "&item="+encodeURIComponent(itemVal)+
@@ -198,6 +198,7 @@ function saveOrder(){
 "&oldweight="+oldWeightVal+
 "&oldtouch="+oldTouchVal+
 "&oldrate="+oldRateVal+
+"&oldvalue="+oldValue+
 "&newwastage="+newWastageVal+
 "&oldwastage="+oldWastageVal+
 "&final="+encodeURIComponent(finalText)+
@@ -369,6 +370,7 @@ function generatePDF(){
 
 </body>
 </html>
+
 
 
 
