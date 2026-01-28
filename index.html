@@ -5,13 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sri Maruthamalai Jewels Works – Billing</title>
 
-  <!-- jsPDF (PDF generation) -->
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
   <style>
-    :root{--bg:#0b1220;--card:#0f1a33;--muted:#aab3c5;--text:#eef2ff;--line:rgba(255,255,255,.12);--accent:#7dd3fc;--ok:#34d399;--warn:#fbbf24;--bad:#fb7185}
+    :root{--card:#0f1a33;--muted:#aab3c5;--text:#eef2ff;--line:rgba(255,255,255,.12);--accent:#7dd3fc;--ok:#34d399;--warn:#fbbf24;--bad:#fb7185}
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial; background:linear-gradient(180deg,#050a16 0%,#0b1220 50%,#050a16 100%); color:var(--text)}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#050a16 0%,#0b1220 50%,#050a16 100%);color:var(--text)}
     .wrap{max-width:1100px;margin:0 auto;padding:18px}
     .top{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
     .brand{display:flex;gap:12px;align-items:center}
@@ -32,7 +31,6 @@
     input,select{width:100%;padding:10px 10px;border-radius:12px;border:1px solid var(--line);background:rgba(3,7,18,.55);color:var(--text);outline:none}
     input:focus,select:focus{border-color:rgba(125,211,252,.65);box-shadow:0 0 0 3px rgba(125,211,252,.15)}
 
-    .toggle{display:flex;align-items:center;gap:10px}
     .switch{position:relative;display:inline-block;width:56px;height:32px}
     .switch input{opacity:0;width:0;height:0}
     .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#1b2b4e;border:1px solid var(--line);transition:.2s;border-radius:999px}
@@ -56,17 +54,14 @@
     .hint{margin-top:10px;color:var(--muted);font-size:12px;line-height:1.45}
     .error{color:#fecaca}
     .ok{color:#bbf7d0}
-
-    .hide{display:none}
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="top">
       <div class="brand">
-        <div class="logo">
-          <img src="logo.png" alt="Logo" onerror="this.style.display='none'" />
-        </div>
+        <div class="logo"><img src="logo.png" alt="Logo" onerror="this.style.display='none'"></div>
         <div class="title">
           <h1>SRI MARUTHAMALAI JEWELS WORKS</h1>
           <p>Custom Jewellery Designers • Phone: 9865739322</p>
@@ -79,18 +74,18 @@
     </div>
 
     <div class="grid">
-      <!-- LEFT: FORM -->
+      <!-- LEFT -->
       <div class="card">
         <h2>Customer & New Gold Details</h2>
 
         <div class="row">
           <div>
             <label>Customer Name</label>
-            <input id="custName" type="text" placeholder="Enter customer name" />
+            <input id="custName" type="text" placeholder="Enter customer name">
           </div>
           <div>
             <label>Contact Number</label>
-            <input id="custPhone" type="tel" inputmode="numeric" placeholder="10-digit phone" />
+            <input id="custPhone" type="tel" inputmode="numeric" placeholder="10-digit phone">
           </div>
         </div>
 
@@ -107,59 +102,57 @@
           </div>
           <div>
             <label>New Gold Purity / Quality (ex: 100 or 91.6)</label>
-            <input id="newPurity" type="number" step="0.1" value="91.6" />
+            <input id="newPurity" type="number" step="0.1" value="91.6">
           </div>
         </div>
 
         <div class="row" style="margin-top:10px">
           <div>
             <label>New Gold Rate per gram (₹)</label>
-            <input id="newRate" type="number" step="0.01" placeholder="e.g., 6500" />
+            <input id="newRate" type="number" step="0.01" placeholder="e.g., 6500">
           </div>
           <div>
             <label>New Gold Weight (grams)</label>
-            <input id="newWeight" type="number" step="0.001" placeholder="e.g., 10.250" />
+            <input id="newWeight" type="number" step="0.001" placeholder="e.g., 10.250">
           </div>
         </div>
 
         <div class="row" style="margin-top:10px">
           <div>
             <label>New Gold Wastage (₹)</label>
-            <input id="newWastage" type="number" step="0.01" value="0" />
+            <input id="newWastage" type="number" step="0.01" value="0">
           </div>
           <div>
             <label>Making Charge (₹)</label>
-            <input id="making" type="number" step="0.01" value="0" />
+            <input id="making" type="number" step="0.01" value="0">
           </div>
         </div>
 
         <div class="row" style="margin-top:10px">
           <div>
             <label>Stone Charge (₹)</label>
-            <input id="stone" type="number" step="0.01" value="0" />
+            <input id="stone" type="number" step="0.01" value="0">
           </div>
           <div>
             <label>Hallmark Charge (₹)</label>
-            <input id="hallmark" type="number" step="0.01" value="0" />
+            <input id="hallmark" type="number" step="0.01" value="0">
           </div>
         </div>
 
         <div class="row" style="margin-top:10px">
           <div>
             <label>Advance Paid (₹)</label>
-            <input id="advance" type="number" step="0.01" value="0" />
+            <input id="advance" type="number" step="0.01" value="0">
           </div>
-          <div class="toggle">
-            <div>
-              <label style="margin-bottom:6px">Old Gold Given?</label>
-              <div style="display:flex;align-items:center;gap:10px">
-                <span style="color:var(--muted);font-size:12px">No</span>
-                <label class="switch">
-                  <input id="oldToggle" type="checkbox" />
-                  <span class="slider"></span>
-                </label>
-                <span style="color:var(--muted);font-size:12px">Yes</span>
-              </div>
+          <div>
+            <label style="margin-bottom:6px">Old Gold Given?</label>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="color:var(--muted);font-size:12px">No</span>
+              <label class="switch">
+                <input id="oldToggle" type="checkbox">
+                <span class="slider"></span>
+              </label>
+              <span style="color:var(--muted);font-size:12px">Yes</span>
             </div>
           </div>
         </div>
@@ -169,47 +162,44 @@
           <div class="row">
             <div>
               <label>Old Gold Rate per gram (₹)</label>
-              <input id="oldRate" type="number" step="0.01" value="0" />
+              <input id="oldRate" type="number" step="0.01" value="0">
             </div>
             <div>
               <label>Old Gold Weight (grams)</label>
-              <input id="oldWeight" type="number" step="0.001" value="0" />
+              <input id="oldWeight" type="number" step="0.001" value="0">
             </div>
           </div>
           <div class="row" style="margin-top:10px">
             <div>
               <label>Old Gold Purity / Touch (ex: 100 or 91.6)</label>
-              <input id="oldPurity" type="number" step="0.1" value="91.6" />
+              <input id="oldPurity" type="number" step="0.1" value="91.6">
             </div>
             <div>
               <label>Old Gold Wastage (₹)</label>
-              <input id="oldWastageAmt" type="number" step="0.01" value="0" />
+              <input id="oldWastageAmt" type="number" step="0.01" value="0">
             </div>
           </div>
           <div class="hint">Old Gold Value = (OldWeight × OldRate × (OldPurity/100)) − OldWastage (₹)</div>
         </div>
 
         <div class="btns">
-          <button class="b1" id="btnCalc">Calculate</button>
-          <button class="b2" id="btnSave" disabled>Save Order (Google Sheet)</button>
-          <button class="b3" id="btnPdf" disabled>Download PDF Invoice</button>
+          <button class="b1" id="btnCalc" type="button">Calculate</button>
+          <button class="b2" id="btnSave" type="button" disabled>Save Order</button>
+          <button class="b3" id="btnPdf" type="button" disabled>Download PDF</button>
           <button class="b4" id="btnClear" type="button">Clear</button>
         </div>
 
         <div id="msg" class="hint"></div>
-        <div class="hint">
-          <b>Important:</b> To enable “Save Order”, set your Apps Script Web App URL in the code: <code>APPS_SCRIPT_URL</code>.
-        </div>
       </div>
 
-      <!-- RIGHT: SUMMARY -->
+      <!-- RIGHT -->
       <div class="card">
         <h2>Totals</h2>
         <div class="summary">
-          <div class="pill"><div><small>New Gold Value</small><div id="newValueLbl">₹ 0.00</div></div><b id="newValue">₹ 0.00</b></div>
+          <div class="pill"><div><small>New Gold Value</small></div><b id="newValue">₹ 0.00</b></div>
           <div class="pill"><div><small>Old Gold Value</small><div style="color:var(--muted);font-size:12px">(0 if No)</div></div><b id="oldValue">₹ 0.00</b></div>
-          <div class="pill"><div><small>Final Payable (New Gold)</small><div style="color:var(--muted);font-size:12px">Gold + charges</div></div><b id="finalPayable">₹ 0.00</b></div>
-          <div class="pill"><div><small>Balance Amount</small><div style="color:var(--muted);font-size:12px">Final − Advance − OldValue</div></div><b id="balance">₹ 0.00</b></div>
+          <div class="pill"><div><small>Final Payable (New Gold)</small></div><b id="finalPayable">₹ 0.00</b></div>
+          <div class="pill"><div><small>Balance Amount</small></div><b id="balance">₹ 0.00</b></div>
         </div>
         <div class="hint" id="breakdown"></div>
       </div>
@@ -217,9 +207,7 @@
   </div>
 
 <script>
-  // 1) Put your Apps Script Web App URL here after deployment
-  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw1kllJyT90zWtl9xhdBuiCBN1rZQ6MVUMBYlHLDs0tPLEGCm6C9GcweYTHI0GUdUP_rA/exec"; // e.g. "https://script.google.com/macros/s/XXXXX/exec"
-
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwOZE7guxYPLhLqJw2o3w8_nbBnIPlj8QSkcjXCxLIYw9phmp0djJuoNlGbcDmZR6wn7w/exec";
   const $ = (id) => document.getElementById(id);
 
   function todayISO(){
@@ -228,110 +216,99 @@
     const local = new Date(d.getTime() - off*60000);
     return local.toISOString().slice(0,10);
   }
-
-  function n(v){
-    const x = Number(v);
-    return Number.isFinite(x) ? x : 0;
-  }
-
-  function money(x){
-    return "₹ " + (Math.round((x + Number.EPSILON) * 100) / 100).toFixed(2);
-  }
+  function n(v){ const x = Number(v); return Number.isFinite(x) ? x : 0; }
+  function money(x){ return "₹ " + (Math.round((x + Number.EPSILON) * 100) / 100).toFixed(2); }
+  function setMsg(text, type=""){ const el = $("msg"); el.className = "hint " + type; el.textContent = text; }
 
   function calc(){
-    const purity = n($("newPurity").value) / 100;
-    const newRate = n($("newRate").value);
-    const newWeight = n($("newWeight").value);
+    const purity = n($("newPurity").value)/100;
+    const rate = n($("newRate").value);
+    const weight = n($("newWeight").value);
 
-    const newGoldValue = newWeight * newRate * purity;
-
-    const newWastage = n($("newWastage").value);
+    const goldValue = weight * rate * purity;
+    const wastage = n($("newWastage").value);
     const making = n($("making").value);
     const stone = n($("stone").value);
     const hallmark = n($("hallmark").value);
 
-    const finalPayable = newGoldValue + newWastage + making + stone + hallmark;
+    const finalPayable = goldValue + wastage + making + stone + hallmark;
 
     let oldValue = 0;
     if ($("oldToggle").checked){
-      const oldRate = n($("oldRate").value);
-      const oldWeight = n($("oldWeight").value);
-      const oldPurity = n($("oldPurity").value)/100;
-      const oldWastageAmt = n($("oldWastageAmt").value);
-      const grossOldValue = oldWeight * oldRate * oldPurity;
-      oldValue = Math.max(0, grossOldValue - oldWastageAmt);
+      const orate = n($("oldRate").value);
+      const owt = n($("oldWeight").value);
+      const opurity = n($("oldPurity").value)/100;
+      const owast = n($("oldWastageAmt").value);
+      oldValue = Math.max(0, (owt * orate * opurity) - owast);
     }
 
     const advance = n($("advance").value);
     const balance = finalPayable - advance - oldValue;
 
-    $("newValueLbl").textContent = money(newGoldValue);
-    $("newValue").textContent = money(newGoldValue);
+    $("newValue").textContent = money(goldValue);
     $("oldValue").textContent = money(oldValue);
     $("finalPayable").textContent = money(finalPayable);
     $("balance").textContent = money(balance);
 
     $("breakdown").innerHTML =
-      `New Gold Value = ${money(newGoldValue)}<br>`+
-      `Final Payable = Gold(${money(newGoldValue)}) + Wastage(${money(newWastage)}) + Making(${money(making)}) + Stone(${money(stone)}) + Hallmark(${money(hallmark)})`+
-      ( $("oldToggle").checked ? `<br>Old Gold Value = ${money(oldValue)}` : ``) +
+      `New Gold Value = ${money(goldValue)}<br>` +
+      `Final = Gold(${money(goldValue)}) + Wastage(${money(wastage)}) + Making(${money(making)}) + Stone(${money(stone)}) + Hallmark(${money(hallmark)})` +
+      ($("oldToggle").checked ? `<br>Old Gold Value = ${money(oldValue)}` : ``) +
       `<br>Balance = ${money(finalPayable)} − ${money(advance)} − ${money(oldValue)}`;
 
-    // Enable actions if minimum fields present
-    const ok = $("custName").value.trim().length > 0 && $("custPhone").value.trim().length >= 8 && newRate > 0 && newWeight > 0;
+    const ok = $("custName").value.trim() && $("custPhone").value.trim().length >= 8 && rate > 0 && weight > 0;
     $("btnSave").disabled = !ok;
     $("btnPdf").disabled = !ok;
 
-    return {newGoldValue, oldValue, finalPayable, balance};
+    return { goldValue, oldValue, finalPayable, balance };
+  }
+
+  function syncOldSection(){
+    const on = $("oldToggle").checked;
+    $("oldSection").style.display = on ? "block" : "none";
+    if (!on){
+      $("oldRate").value = 0;
+      $("oldWeight").value = 0;
+      $("oldPurity").value = 91.6;
+      $("oldWastageAmt").value = 0;
+      $("oldValue").textContent = money(0);
+    }
+    calc();
   }
 
   function readForm(){
-    const totals = calc();
-
-    const payload = {
+    const t = calc();
+    return {
       name: $("custName").value.trim(),
       phone: $("custPhone").value.trim(),
       item: $("item").value,
+
       purity: n($("newPurity").value),
       newGoldWeight: n($("newWeight").value),
       goldRatePerGram: n($("newRate").value),
+      newGoldWastage: n($("newWastage").value),
       makingCharge: n($("making").value),
       stoneCharge: n($("stone").value),
       hallMarkCharge: n($("hallmark").value),
-      newGoldWastage: n($("newWastage").value),
 
       oldGoldGiven: $("oldToggle").checked,
+      oldGoldRate: $("oldToggle").checked ? n($("oldRate").value) : "",
       oldGoldWeight: $("oldToggle").checked ? n($("oldWeight").value) : "",
       oldGoldPurity: $("oldToggle").checked ? n($("oldPurity").value) : "",
-      oldGoldRate: $("oldToggle").checked ? n($("oldRate").value) : "",
       oldGoldWastage: $("oldToggle").checked ? n($("oldWastageAmt").value) : "",
 
-      finalPayable: totals.finalPayable,
+      finalPayable: t.finalPayable,
       advance: n($("advance").value),
-      balance: totals.balance,
+      balance: t.balance,
       date: $("invoiceDate").value || todayISO(),
 
-      // extra calculated fields (optional)
-      newGoldValue: totals.newGoldValue,
-      oldGoldValue: totals.oldValue,
+      newGoldValue: t.goldValue,
+      oldGoldValue: t.oldValue
     };
-
-    return payload;
-  }
-
-  function setMsg(text, type=""){
-    const el = $("msg");
-    el.className = "hint " + (type || "");
-    el.textContent = text;
   }
 
   async function saveOrder(){
-    if (!APPS_SCRIPT_URL){
-      setMsg("Add your Apps Script Web App URL inside APPS_SCRIPT_URL in index.html", "error");
-      return;
-    }
     const payload = readForm();
-
     setMsg("Saving to Google Sheet...", "");
     try{
       const res = await fetch(APPS_SCRIPT_URL, {
@@ -340,36 +317,9 @@
         body: JSON.stringify(payload)
       });
       const data = await res.json();
-      if (data && data.ok){
-        setMsg("Saved successfully ✔ Row: " + data.row, "ok");
-      } else {
-        setMsg("Save failed: " + (data?.error || "Unknown error"), "error");
-      }
-    } catch (e){
-      setMsg("Save error: " + e.message, "error");
-    }
-  }
-    } catch (e){
-      setMsg("Save error: " + e.message, "error");
-    }
-  }
-    const payload = readForm();
-
-    setMsg("Saving to Google Sheet...", "");
-    try{
-      const res = await fetch(APPS_SCRIPT_URL, {
-        method: "POST",
-        
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-      if (data && data.ok){
-        setMsg("Saved successfully ✔ Row: " + data.row, "ok");
-      } else {
-        setMsg("Save failed: " + (data?.error || "Unknown error"), "error");
-      }
-    } catch (e){
+      if (data.ok) setMsg("Saved ✔ Row: " + data.row, "ok");
+      else setMsg("Save failed: " + (data.error || "Unknown"), "error");
+    }catch(e){
       setMsg("Save error: " + e.message, "error");
     }
   }
@@ -381,8 +331,7 @@
       img.onload = () => {
         const c = document.createElement("canvas");
         c.width = img.naturalWidth; c.height = img.naturalHeight;
-        const ctx = c.getContext("2d");
-        ctx.drawImage(img,0,0);
+        c.getContext("2d").drawImage(img, 0, 0);
         resolve(c.toDataURL("image/png"));
       };
       img.onerror = () => resolve(null);
@@ -391,158 +340,100 @@
   }
 
   async function downloadPdf(){
-    const payload = readForm();
+    const p = readForm();
     const { jsPDF } = window.jspdf;
-
     const doc = new jsPDF({unit:"pt", format:"a4"});
     const W = doc.internal.pageSize.getWidth();
 
-    // Header bar
-    doc.setFillColor(10, 20, 40);
-    doc.rect(0, 0, W, 86, "F");
+    doc.setFillColor(10,20,40);
+    doc.rect(0,0,W,86,"F");
 
-    // Logo
     const logo = await loadImageAsDataURL("logo.png");
-    if (logo){
-      doc.addImage(logo, "PNG", 28, 18, 50, 50);
-    }
+    if (logo) doc.addImage(logo,"PNG",28,18,50,50);
 
     doc.setTextColor(255,255,255);
-    doc.setFont("helvetica","bold");
-    doc.setFontSize(16);
+    doc.setFont("helvetica","bold"); doc.setFontSize(16);
     doc.text("SRI MARUTHAMALAI JEWELS WORKS", 92, 38);
-
-    doc.setFont("helvetica","normal");
-    doc.setFontSize(10);
+    doc.setFont("helvetica","normal"); doc.setFontSize(10);
     doc.text("Custom Jewellery Designers", 92, 54);
     doc.text("Phone: 9865739322", 92, 68);
-
-    doc.setFont("helvetica","bold");
-    doc.setFontSize(18);
+    doc.setFont("helvetica","bold"); doc.setFontSize(18);
     doc.text("INVOICE", W-80, 52, {align:"right"});
 
-    // Body
-    doc.setTextColor(20,20,20);
-    doc.setFontSize(11);
+    doc.setTextColor(20,20,20); doc.setFontSize(11);
 
-    const startY = 110;
+    const y0 = 110;
+    doc.setFont("helvetica","bold"); doc.text("Customer:", 28, y0);
+    doc.setFont("helvetica","normal"); doc.text(p.name || "-", 95, y0);
 
-    // Customer block
-    doc.setFont("helvetica","bold");
-    doc.text("Customer:", 28, startY);
-    doc.setFont("helvetica","normal");
-    doc.text(payload.name || "-", 95, startY);
+    doc.setFont("helvetica","bold"); doc.text("Phone:", 28, y0+18);
+    doc.setFont("helvetica","normal"); doc.text(p.phone || "-", 95, y0+18);
 
-    doc.setFont("helvetica","bold");
-    doc.text("Phone:", 28, startY+18);
-    doc.setFont("helvetica","normal");
-    doc.text(payload.phone || "-", 95, startY+18);
+    doc.setFont("helvetica","bold"); doc.text("Item:", 320, y0);
+    doc.setFont("helvetica","normal"); doc.text(String(p.item||"-"), 360, y0);
 
-    doc.setFont("helvetica","bold");
-    doc.text("Item:", 320, startY);
-    doc.setFont("helvetica","normal");
-    doc.text(String(payload.item || "-") , 360, startY);
+    doc.setFont("helvetica","bold"); doc.text("Purity:", 320, y0+18);
+    doc.setFont("helvetica","normal"); doc.text(String(p.purity||"-"), 370, y0+18);
 
-    doc.setFont("helvetica","bold");
-    doc.text("Purity:", 320, startY+18);
-    doc.setFont("helvetica","normal");
-    doc.text(String(payload.purity ?? "-") , 370, startY+18);
+    doc.setFont("helvetica","bold"); doc.text("Weight:", 28, y0+42);
+    doc.setFont("helvetica","normal"); doc.text(String(p.newGoldWeight)+" g", 95, y0+42);
 
-    doc.setFont("helvetica","bold");
-    doc.text("Weight:", 28, startY+42);
-    doc.setFont("helvetica","normal");
-    doc.text(String(payload.newGoldWeight) + " g", 95, startY+42);
+    doc.setFont("helvetica","bold"); doc.text("Gold Rate:", 320, y0+42);
+    doc.setFont("helvetica","normal"); doc.text("Rs. "+String(p.goldRatePerGram), 390, y0+42);
 
-    doc.setFont("helvetica","bold");
-    doc.text("Gold Rate:", 320, startY+42);
-    doc.setFont("helvetica","normal");
-    doc.text("Rs. " + String(payload.goldRatePerGram), 390, startY+42);
-
-    // Line
     doc.setDrawColor(220,220,220);
-    doc.line(28, startY+58, W-28, startY+58);
+    doc.line(28, y0+58, W-28, y0+58);
 
-    // Charges table-like layout
-    let y = startY + 84;
+    let y = y0+84;
     doc.setFont("helvetica","bold");
     doc.text("Description", 28, y);
     doc.text("Amount (Rs.)", W-28, y, {align:"right"});
 
-    y += 10;
-    doc.setDrawColor(230,230,230);
-    doc.line(28, y, W-28, y);
+    y += 10; doc.setDrawColor(230,230,230); doc.line(28, y, W-28, y);
 
-    function row(desc, amt){
-      y += 18;
-      doc.setFont("helvetica","normal");
-      doc.text(desc, 28, y);
-      doc.text(String(amt.toFixed(2)), W-28, y, {align:"right"});
-    }
+    const row = (d,a)=>{ y+=18; doc.setFont("helvetica","normal"); doc.text(d,28,y); doc.text(String(Number(a||0).toFixed(2)),W-28,y,{align:"right"}); };
+    row("Gold Value", p.newGoldValue);
+    row("New Gold Wastage", p.newGoldWastage);
+    row("Making Charge", p.makingCharge);
+    row("Stone Charge", p.stoneCharge);
+    row("Hallmark Charge", p.hallMarkCharge);
 
-    row("Gold Value", payload.newGoldValue || 0);
-    row("New Gold Wastage", payload.newGoldWastage || 0);
-    row("Making Charge", payload.makingCharge || 0);
-    row("Stone Charge", payload.stoneCharge || 0);
-    row("Hallmark Charge", payload.hallMarkCharge || 0);
-
-    y += 16;
-    doc.setDrawColor(200,200,200);
-    doc.line(28, y, W-28, y);
-
-    y += 22;
-    doc.setFont("helvetica","bold");
+    y += 16; doc.setDrawColor(200,200,200); doc.line(28,y,W-28,y);
+    y += 22; doc.setFont("helvetica","bold");
     doc.text("TOTAL", 28, y);
-    doc.text(String(payload.finalPayable.toFixed(2)), W-28, y, {align:"right"});
+    doc.text(String(Number(p.finalPayable||0).toFixed(2)), W-28, y, {align:"right"});
 
-    // Old gold
-    y += 26;
-    doc.setFont("helvetica","bold");
-    doc.text("Old Gold Details", 28, y);
-
-    doc.setFont("helvetica","normal");
-    y += 18;
-    if (payload.oldGoldGiven){
-      doc.text(`Old Gold Weight: ${payload.oldGoldWeight} g`, 28, y);
-      y += 16;
-      doc.text(`Old Gold Touch: ${payload.oldGoldPurity}`, 28, y);
-      y += 16;
-      doc.text(`Old Gold Wastage: Rs. ${payload.oldGoldWastage}`, 28, y);
-      y += 16;
-      doc.text(`Old Gold Rate: Rs. ${payload.oldGoldRate}`, 28, y);
-      y += 16;
-      doc.text(`Old Gold Value: ${Number(payload.oldGoldValue || 0).toFixed(2)}`, 28, y);
+    y += 26; doc.setFont("helvetica","bold"); doc.text("Old Gold Details", 28, y);
+    y += 18; doc.setFont("helvetica","normal");
+    if (p.oldGoldGiven){
+      doc.text(`Old Gold Weight: ${p.oldGoldWeight} g`, 28, y); y+=16;
+      doc.text(`Old Gold Touch: ${p.oldGoldPurity}`, 28, y); y+=16;
+      doc.text(`Old Gold Wastage: Rs. ${p.oldGoldWastage}`, 28, y); y+=16;
+      doc.text(`Old Gold Rate: Rs. ${p.oldGoldRate}`, 28, y); y+=16;
+      doc.text(`Old Gold Value: ${Number(p.oldGoldValue||0).toFixed(2)}`, 28, y);
     } else {
       doc.text("Old gold not given", 28, y);
     }
 
-    // Final payable, advance, balance
-    y += 22;
-    doc.setFont("helvetica","bold");
+    y += 22; doc.setFont("helvetica","bold");
     doc.text("Final Payable", 28, y);
-    doc.text(String(payload.finalPayable.toFixed(2)), W-28, y, {align:"right"});
+    doc.text(String(Number(p.finalPayable||0).toFixed(2)), W-28, y, {align:"right"});
 
     y += 18;
-    doc.setFont("helvetica","bold");
     doc.text("Advance Paid", 28, y);
-    doc.text(String(Number(payload.advance||0).toFixed(2)), W-28, y, {align:"right"});
+    doc.text(String(Number(p.advance||0).toFixed(2)), W-28, y, {align:"right"});
 
     y += 18;
-    doc.setFont("helvetica","bold");
     doc.text("Balance Amount", 28, y);
-    doc.text(String(Number(payload.balance||0).toFixed(2)), W-28, y, {align:"right"});
+    doc.text(String(Number(p.balance||0).toFixed(2)), W-28, y, {align:"right"});
 
-    // Footer
-    const d = payload.date || todayISO();
-    y += 22;
-    doc.setFont("helvetica","normal");
-    doc.setFontSize(10);
+    const d = p.date || todayISO();
+    y += 22; doc.setFont("helvetica","normal"); doc.setFontSize(10);
     doc.text(`Date: ${d}`, 28, y);
-
-    doc.setFontSize(10);
     doc.text("Thank you for your business!", 28, 820);
 
-    const safeName = (payload.name || "invoice").replace(/[^a-z0-9\-\_ ]/gi, "").trim().replace(/\s+/g,"_");
-    doc.save(`${safeName}_${d}.pdf`);
+    const safe = (p.name || "invoice").replace(/[^a-z0-9 _-]/gi,"").trim().replace(/\s+/g,"_");
+    doc.save(`${safe}_${d}.pdf`);
   }
 
   function clearAll(){
@@ -564,42 +455,25 @@
     $("oldPurity").value = 91.6;
     $("oldWastageAmt").value = 0;
 
+    $("invoiceDate").value = todayISO();
     setMsg("");
-    calc();
+    syncOldSection();
   }
 
-  function syncOldSection(){
-    const on = $("oldToggle").checked;
-    $("oldSection").style.display = on ? "block" : "none";
-    if (!on) {
-      $("oldRate").value = 0;
-      $("oldWeight").value = 0;
-      $("oldPurity").value = 91.6;
-      $("oldWastageAmt").value = 0;
-      $("oldValue").textContent = money(0);
-    }
+  window.addEventListener("DOMContentLoaded", () => {
+    $("invoiceDate").value = todayISO();
+    $("oldToggle").checked = false;
+    syncOldSection();
     calc();
-  }{
-    const on = $("oldToggle").checked;
-    $("oldSection").style.display = on ? "block" : "none";
-    calc();
-  }
 
-  // Init
-  $("invoiceDate").value = todayISO();
-  $("oldToggle").checked = false;
-  syncOldSection();
-  calc();
+    $("oldToggle").addEventListener("change", syncOldSection);
+    $("btnCalc").addEventListener("click", ()=>{ calc(); setMsg("Calculated ✔","ok"); });
+    $("btnSave").addEventListener("click", saveOrder);
+    $("btnPdf").addEventListener("click", downloadPdf);
+    $("btnClear").addEventListener("click", clearAll);
 
-  // Events
-  $("oldToggle").addEventListener("change", syncOldSection);
-  $("btnCalc").addEventListener("click", (e)=>{e.preventDefault(); calc(); setMsg("Calculated ✔", "ok");});
-  $("btnSave").addEventListener("click", (e)=>{e.preventDefault(); saveOrder();});
-  $("btnPdf").addEventListener("click", (e)=>{e.preventDefault(); downloadPdf();});
-  $("btnClear").addEventListener("click", (e)=>{e.preventDefault(); clearAll();});
-
-  ["custName","custPhone","item","newPurity","newRate","newWeight","newWastage","making","stone","hallmark","advance","oldRate","oldWeight","oldPurity","oldWastageAmt"].forEach(id=>{
-    $(id).addEventListener("input", ()=>{ calc(); });
+    ["custName","custPhone","item","newPurity","newRate","newWeight","newWastage","making","stone","hallmark","advance","oldRate","oldWeight","oldPurity","oldWastageAmt","invoiceDate"]
+      .forEach(id => { $(id).addEventListener("input", calc); $(id).addEventListener("change", calc); });
   });
 </script>
 </body>
