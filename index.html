@@ -192,7 +192,7 @@ function saveOrder(){
 "&stone="+stoneVal+
 "&hallmark="+hallmarkVal+
 "&oldweight="+oldWeightVal+
-"&oldtouch="+oldTouchVal+
+"&oldtouch="+encodeURIComponent(oldTouchVal)+
 "&oldrate="+oldRateVal+
 "&final="+encodeURIComponent(finalText)+
 "&advance="+advanceVal+
@@ -362,6 +362,7 @@ function generatePDF(){
 
 </body>
 </html>
+
 
 
 
