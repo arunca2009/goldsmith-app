@@ -182,11 +182,11 @@
               <input id="oldPurity" type="number" step="0.1" value="91.6" />
             </div>
             <div>
-              <label>Old Gold Wastage (%)</label>
-              <input id="oldWastagePct" type="number" step="0.01" value="0" />
+              <label>Old Gold Wastage (₹)</label>
+              <input id="oldWastageAmt" type="number" step="0.01" value="0" />
             </div>
           </div>
-          <div class="hint">Old Gold Value = OldWeight × OldRate × (OldPurity/100) × (1 − OldWastage%/100)</div>
+          <div class="hint">Old Gold Value = (OldWeight × OldRate × (OldPurity/100)) − OldWastage (₹)</div>
         </div>
 
         <div class="btns">
@@ -218,7 +218,7 @@
 
 <script>
   // 1) Put your Apps Script Web App URL here after deployment
-  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw1kllJyT90zWtl9xhdBuiCBN1rZQ6MVUMBYlHLDs0tPLEGCm6C9GcweYTHI0GUdUP_rA/exec"; // e.g. "https://script.google.com/macros/s/XXXXX/exec"
+  const APPS_SCRIPT_URL = ""; // e.g. "https://script.google.com/macros/s/XXXXX/exec"
 
   const $ = (id) => document.getElementById(id);
 
@@ -257,9 +257,9 @@
       const oldRate = n($("oldRate").value);
       const oldWeight = n($("oldWeight").value);
       const oldPurity = n($("oldPurity").value)/100;
-      const oldWastagePct = n($("oldWastagePct").value);
-      const factor = Math.max(0, 1 - (oldWastagePct/100));
-      oldValue = oldWeight * oldRate * oldPurity * factor;
+      const oldWastageAmt = n($("oldWastageAmt").value);
+      const grossOldValue = oldWeight * oldRate * oldPurity;
+      oldValue = Math.max(0, grossOldValue - oldWastageAmt);
     }
 
     const advance = n($("advance").value);
@@ -304,7 +304,7 @@
       oldGoldWeight: $("oldToggle").checked ? n($("oldWeight").value) : "",
       oldGoldPurity: $("oldToggle").checked ? n($("oldPurity").value) : "",
       oldGoldRate: $("oldToggle").checked ? n($("oldRate").value) : "",
-      oldGoldWastage: $("oldToggle").checked ? n($("oldWastagePct").value) : "",
+      oldGoldWastage: $("oldToggle").checked ? n($("oldWastageAmt").value) : "",
 
       finalPayable: totals.finalPayable,
       advance: n($("advance").value),
@@ -539,7 +539,7 @@
     $("oldRate").value = 0;
     $("oldWeight").value = 0;
     $("oldPurity").value = 91.6;
-    $("oldWastagePct").value = 0;
+    $("oldWastageAmt").value = 0;
 
     setMsg("");
     calc();
@@ -563,7 +563,7 @@
   $("btnPdf").addEventListener("click", (e)=>{e.preventDefault(); downloadPdf();});
   $("btnClear").addEventListener("click", (e)=>{e.preventDefault(); clearAll();});
 
-  ["custName","custPhone","item","newPurity","newRate","newWeight","newWastage","making","stone","hallmark","advance","oldRate","oldWeight","oldPurity","oldWastagePct"].forEach(id=>{
+  ["custName","custPhone","item","newPurity","newRate","newWeight","newWastage","making","stone","hallmark","advance","oldRate","oldWeight","oldPurity","oldWastageAmt"].forEach(id=>{
     $(id).addEventListener("input", ()=>{ calc(); });
   });
 </script>
