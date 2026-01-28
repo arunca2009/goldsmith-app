@@ -74,6 +74,7 @@ if(prompt("Enter Password")!="1234"){
 <input id="weight" placeholder="New Gold Weight (g)">
 <input id="rate" placeholder="Gold Rate per gram">
 <input id="making" placeholder="Making Charge">
+<input id="newWastage" placeholder="New Gold Wastage (Rs.)">
 <input id="stone" placeholder="Stone Charge">
 <input id="hallmark" placeholder="Hallmark Charge">
 <input id="advance" placeholder="Advance Paid">
@@ -93,7 +94,7 @@ if(prompt("Enter Password")!="1234"){
 
 <input id="oldWeight" placeholder="Old Gold Weight (g)">
 <input id="oldRate" placeholder="Old Gold Rate">
-<input id="oldWastage" placeholder="Old Gold Wastage (%)">
+<input id="oldWastage" placeholder="Old Gold Wastage (Rs.)">
 </div>
 
 <button onclick="calculate()">CALCULATE</button>
@@ -140,12 +141,13 @@ function calculate(){
  let p = Number(document.getElementById("purity").value);
 
  // NEW GOLD VALUE
- let newTotal = ((w * (p/100)) * r) + m + s + h;
+ let newWast = Number(document.getElementById("newWastage").value);
+ let newTotal = ((w * (p/100)) * r) + m + s + h + newWast;
 
  // OLD GOLD VALUE
  let pure = ow * (ot/100);
- let finalPure = pure - (pure*(wast/100));
- let oldValue = finalPure * orate;
+ let oldValue = (pure * orate) - wast;
+
 
  // FINAL
  let final = newTotal - oldValue;
@@ -362,6 +364,7 @@ function generatePDF(){
 
 </body>
 </html>
+
 
 
 
