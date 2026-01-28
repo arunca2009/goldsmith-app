@@ -126,7 +126,7 @@ function calculate(){
 
  let w=Number(weight.value);
  let r=Number(rate.value);
- let p = Number(document.getElementById("purity").value);
+ let p=Number(document.getElementById("purity").value);
  let m=Number(making.value);
  let s=Number(stone.value);
  let h=Number(hallmark.value);
@@ -136,10 +136,8 @@ function calculate(){
  let ot = Number(document.getElementById("oldTouch").value);
  let orate=Number(oldRate.value);
 
- let p = Number(document.getElementById("purity").value);
-
- let pureNewGold = w * (p/100);
- let newTotal = (pureNewGold * r) + m + s + h;
+ let pureNewGold = w*(p/100);
+ let newTotal = (pureNewGold*r)+m+s+h;
 
  let wast = Number(oldWastage.value);
  let pure = ow*(ot/100);
@@ -337,6 +335,7 @@ function generatePDF(){
 
 </body>
 </html>
+
 
 
 
