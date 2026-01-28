@@ -173,7 +173,7 @@ function saveOrder(){
  "&stone="+stone.value+
  "&hallmark="+hallmark.value+
  "&oldweight="+oldWeight.value+
- "&oldtouch="+oldTouch.options[oldTouch.selectedIndex].text+
+ "&oldtouch="+encodeURIComponent(otText)+
  "&oldrate="+oldRate.value+
  "&final="+result.innerText+
  "&advance="+advance.value+
@@ -219,7 +219,7 @@ function generatePDF(){
  let adv = Number(advance.value);
 
  let ow = Number(oldWeight.value);
- let otText = document.getElementById("oldTouch").value + " %";
+ let otText = document.getElementById("oldTouch").value;
  let otVal = Number(oldTouch.value);
  let orate = Number(oldRate.value);
 
@@ -340,5 +340,6 @@ function generatePDF(){
 
 </body>
 </html>
+
 
 
