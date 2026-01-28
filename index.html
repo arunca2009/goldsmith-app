@@ -1,382 +1,571 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sri Maruthamalai Jewels Works – Billing</title>
 
-<title>Goldsmith Billing</title>
+  <!-- jsPDF (PDF generation) -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    :root{--bg:#0b1220;--card:#0f1a33;--muted:#aab3c5;--text:#eef2ff;--line:rgba(255,255,255,.12);--accent:#7dd3fc;--ok:#34d399;--warn:#fbbf24;--bad:#fb7185}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial; background:linear-gradient(180deg,#050a16 0%,#0b1220 50%,#050a16 100%); color:var(--text)}
+    .wrap{max-width:1100px;margin:0 auto;padding:18px}
+    .top{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:46px;height:46px;border-radius:12px;background:#0b2440;border:1px solid var(--line);display:grid;place-items:center;overflow:hidden}
+    .logo img{width:100%;height:100%;object-fit:cover}
+    .title h1{font-size:18px;margin:0 0 2px 0}
+    .title p{margin:0;color:var(--muted);font-size:12px}
 
-<style>
-body{
- font-family: Arial, sans-serif;
- background:#f2f2f2;
- padding:10px;
-}
-.box{
- background:#fff;
- padding:15px;
- border-radius:12px;
- max-width:520px;
- margin:auto;
-}
-input,select,button{
- width:100%;
- padding:12px;
- margin-top:8px;
- font-size:16px;
- border-radius:8px;
- border:1px solid #ccc;
-}
-button{
- background:#0a7cff;
- color:white;
- border:none;
-}
-h2{text-align:center;}
-.section{
- background:#f7f7f7;
- padding:10px;
- border-radius:8px;
- margin-top:10px;
-}
-</style>
+    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;margin-top:14px}
+    @media (max-width: 900px){.grid{grid-template-columns:1fr}}
+
+    .card{background:rgba(15,26,51,.75);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 12px 40px rgba(0,0,0,.35);backdrop-filter: blur(8px)}
+    .card h2{margin:0 0 10px 0;font-size:14px;color:var(--accent);letter-spacing:.2px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media (max-width: 520px){.row{grid-template-columns:1fr}}
+
+    label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px 0}
+    input,select{width:100%;padding:10px 10px;border-radius:12px;border:1px solid var(--line);background:rgba(3,7,18,.55);color:var(--text);outline:none}
+    input:focus,select:focus{border-color:rgba(125,211,252,.65);box-shadow:0 0 0 3px rgba(125,211,252,.15)}
+
+    .toggle{display:flex;align-items:center;gap:10px}
+    .switch{position:relative;display:inline-block;width:56px;height:32px}
+    .switch input{opacity:0;width:0;height:0}
+    .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#1b2b4e;border:1px solid var(--line);transition:.2s;border-radius:999px}
+    .slider:before{position:absolute;content:"";height:24px;width:24px;left:4px;top:3px;background:#e5e7eb;transition:.2s;border-radius:50%}
+    input:checked + .slider{background:rgba(52,211,153,.25);border-color:rgba(52,211,153,.55)}
+    input:checked + .slider:before{transform:translateX(24px);background:#34d399}
+
+    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    button{border:0;border-radius:14px;padding:10px 12px;font-weight:650;cursor:pointer;color:#07101f}
+    .b1{background:linear-gradient(135deg,var(--accent),#a78bfa)}
+    .b2{background:linear-gradient(135deg,var(--ok),#a3e635)}
+    .b3{background:linear-gradient(135deg,#fde68a,var(--warn))}
+    .b4{background:linear-gradient(135deg,#fda4af,var(--bad))}
+    button:disabled{opacity:.55;cursor:not-allowed}
+
+    .summary{display:grid;gap:10px}
+    .pill{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:16px;background:rgba(3,7,18,.45)}
+    .pill small{color:var(--muted)}
+    .pill b{font-size:16px}
+
+    .hint{margin-top:10px;color:var(--muted);font-size:12px;line-height:1.45}
+    .error{color:#fecaca}
+    .ok{color:#bbf7d0}
+
+    .hide{display:none}
+  </style>
 </head>
-
 <body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="logo">
+          <img src="logo.png" alt="Logo" onerror="this.style.display='none'" />
+        </div>
+        <div class="title">
+          <h1>SRI MARUTHAMALAI JEWELS WORKS</h1>
+          <p>Custom Jewellery Designers • Phone: 9865739322</p>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <div style="color:var(--muted);font-size:12px">Invoice Date</div>
+        <input id="invoiceDate" type="date" style="width:160px" />
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT: FORM -->
+      <div class="card">
+        <h2>Customer & New Gold Details</h2>
+
+        <div class="row">
+          <div>
+            <label>Customer Name</label>
+            <input id="custName" type="text" placeholder="Enter customer name" />
+          </div>
+          <div>
+            <label>Contact Number</label>
+            <input id="custPhone" type="tel" inputmode="numeric" placeholder="10-digit phone" />
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:10px">
+          <div>
+            <label>Item</label>
+            <select id="item">
+              <option value="Bangle">Bangle</option>
+              <option value="Necklace">Necklace</option>
+              <option value="Chain">Chain</option>
+              <option value="Earring">Earring</option>
+              <option value="Bracelet">Bracelet</option>
+            </select>
+          </div>
+          <div>
+            <label>New Gold Purity / Quality (ex: 100 or 91.6)</label>
+            <input id="newPurity" type="number" step="0.1" value="91.6" />
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:10px">
+          <div>
+            <label>New Gold Rate per gram (₹)</label>
+            <input id="newRate" type="number" step="0.01" placeholder="e.g., 6500" />
+          </div>
+          <div>
+            <label>New Gold Weight (grams)</label>
+            <input id="newWeight" type="number" step="0.001" placeholder="e.g., 10.250" />
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:10px">
+          <div>
+            <label>New Gold Wastage (₹)</label>
+            <input id="newWastage" type="number" step="0.01" value="0" />
+          </div>
+          <div>
+            <label>Making Charge (₹)</label>
+            <input id="making" type="number" step="0.01" value="0" />
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:10px">
+          <div>
+            <label>Stone Charge (₹)</label>
+            <input id="stone" type="number" step="0.01" value="0" />
+          </div>
+          <div>
+            <label>Hallmark Charge (₹)</label>
+            <input id="hallmark" type="number" step="0.01" value="0" />
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:10px">
+          <div>
+            <label>Advance Paid (₹)</label>
+            <input id="advance" type="number" step="0.01" value="0" />
+          </div>
+          <div class="toggle">
+            <div>
+              <label style="margin-bottom:6px">Old Gold Given?</label>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="color:var(--muted);font-size:12px">No</span>
+                <label class="switch">
+                  <input id="oldToggle" type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+                <span style="color:var(--muted);font-size:12px">Yes</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="oldSection" class="card" style="margin-top:12px">
+          <h2>Old Gold Details (only if Yes)</h2>
+          <div class="row">
+            <div>
+              <label>Old Gold Rate per gram (₹)</label>
+              <input id="oldRate" type="number" step="0.01" value="0" />
+            </div>
+            <div>
+              <label>Old Gold Weight (grams)</label>
+              <input id="oldWeight" type="number" step="0.001" value="0" />
+            </div>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <div>
+              <label>Old Gold Purity / Touch (ex: 100 or 91.6)</label>
+              <input id="oldPurity" type="number" step="0.1" value="91.6" />
+            </div>
+            <div>
+              <label>Old Gold Wastage (%)</label>
+              <input id="oldWastagePct" type="number" step="0.01" value="0" />
+            </div>
+          </div>
+          <div class="hint">Old Gold Value = OldWeight × OldRate × (OldPurity/100) × (1 − OldWastage%/100)</div>
+        </div>
+
+        <div class="btns">
+          <button class="b1" id="btnCalc">Calculate</button>
+          <button class="b2" id="btnSave" disabled>Save Order (Google Sheet)</button>
+          <button class="b3" id="btnPdf" disabled>Download PDF Invoice</button>
+          <button class="b4" id="btnClear" type="button">Clear</button>
+        </div>
+
+        <div id="msg" class="hint"></div>
+        <div class="hint">
+          <b>Important:</b> To enable “Save Order”, set your Apps Script Web App URL in the code: <code>APPS_SCRIPT_URL</code>.
+        </div>
+      </div>
+
+      <!-- RIGHT: SUMMARY -->
+      <div class="card">
+        <h2>Totals</h2>
+        <div class="summary">
+          <div class="pill"><div><small>New Gold Value</small><div id="newValueLbl">₹ 0.00</div></div><b id="newValue">₹ 0.00</b></div>
+          <div class="pill"><div><small>Old Gold Value</small><div style="color:var(--muted);font-size:12px">(0 if No)</div></div><b id="oldValue">₹ 0.00</b></div>
+          <div class="pill"><div><small>Final Payable (New Gold)</small><div style="color:var(--muted);font-size:12px">Gold + charges</div></div><b id="finalPayable">₹ 0.00</b></div>
+          <div class="pill"><div><small>Balance Amount</small><div style="color:var(--muted);font-size:12px">Final − Advance − OldValue</div></div><b id="balance">₹ 0.00</b></div>
+        </div>
+        <div class="hint" id="breakdown"></div>
+      </div>
+    </div>
+  </div>
 
 <script>
-if(prompt("Enter Password")!="1234"){
- document.body.innerHTML="ACCESS DENIED";
-}
+  // 1) Put your Apps Script Web App URL here after deployment
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw1kllJyT90zWtl9xhdBuiCBN1rZQ6MVUMBYlHLDs0tPLEGCm6C9GcweYTHI0GUdUP_rA/exec"; // e.g. "https://script.google.com/macros/s/XXXXX/exec"
+
+  const $ = (id) => document.getElementById(id);
+
+  function todayISO(){
+    const d = new Date();
+    const off = d.getTimezoneOffset();
+    const local = new Date(d.getTime() - off*60000);
+    return local.toISOString().slice(0,10);
+  }
+
+  function n(v){
+    const x = Number(v);
+    return Number.isFinite(x) ? x : 0;
+  }
+
+  function money(x){
+    return "₹ " + (Math.round((x + Number.EPSILON) * 100) / 100).toFixed(2);
+  }
+
+  function calc(){
+    const purity = n($("newPurity").value) / 100;
+    const newRate = n($("newRate").value);
+    const newWeight = n($("newWeight").value);
+
+    const newGoldValue = newWeight * newRate * purity;
+
+    const newWastage = n($("newWastage").value);
+    const making = n($("making").value);
+    const stone = n($("stone").value);
+    const hallmark = n($("hallmark").value);
+
+    const finalPayable = newGoldValue + newWastage + making + stone + hallmark;
+
+    let oldValue = 0;
+    if ($("oldToggle").checked){
+      const oldRate = n($("oldRate").value);
+      const oldWeight = n($("oldWeight").value);
+      const oldPurity = n($("oldPurity").value)/100;
+      const oldWastagePct = n($("oldWastagePct").value);
+      const factor = Math.max(0, 1 - (oldWastagePct/100));
+      oldValue = oldWeight * oldRate * oldPurity * factor;
+    }
+
+    const advance = n($("advance").value);
+    const balance = finalPayable - advance - oldValue;
+
+    $("newValueLbl").textContent = money(newGoldValue);
+    $("newValue").textContent = money(newGoldValue);
+    $("oldValue").textContent = money(oldValue);
+    $("finalPayable").textContent = money(finalPayable);
+    $("balance").textContent = money(balance);
+
+    $("breakdown").innerHTML =
+      `New Gold Value = ${money(newGoldValue)}<br>`+
+      `Final Payable = Gold(${money(newGoldValue)}) + Wastage(${money(newWastage)}) + Making(${money(making)}) + Stone(${money(stone)}) + Hallmark(${money(hallmark)})`+
+      ( $("oldToggle").checked ? `<br>Old Gold Value = ${money(oldValue)}` : ``) +
+      `<br>Balance = ${money(finalPayable)} − ${money(advance)} − ${money(oldValue)}`;
+
+    // Enable actions if minimum fields present
+    const ok = $("custName").value.trim().length > 0 && $("custPhone").value.trim().length >= 8 && newRate > 0 && newWeight > 0;
+    $("btnSave").disabled = !ok;
+    $("btnPdf").disabled = !ok;
+
+    return {newGoldValue, oldValue, finalPayable, balance};
+  }
+
+  function readForm(){
+    const totals = calc();
+
+    const payload = {
+      name: $("custName").value.trim(),
+      phone: $("custPhone").value.trim(),
+      item: $("item").value,
+      purity: n($("newPurity").value),
+      newGoldWeight: n($("newWeight").value),
+      goldRatePerGram: n($("newRate").value),
+      makingCharge: n($("making").value),
+      stoneCharge: n($("stone").value),
+      hallMarkCharge: n($("hallmark").value),
+      newGoldWastage: n($("newWastage").value),
+
+      oldGoldGiven: $("oldToggle").checked,
+      oldGoldWeight: $("oldToggle").checked ? n($("oldWeight").value) : "",
+      oldGoldPurity: $("oldToggle").checked ? n($("oldPurity").value) : "",
+      oldGoldRate: $("oldToggle").checked ? n($("oldRate").value) : "",
+      oldGoldWastage: $("oldToggle").checked ? n($("oldWastagePct").value) : "",
+
+      finalPayable: totals.finalPayable,
+      advance: n($("advance").value),
+      balance: totals.balance,
+      date: $("invoiceDate").value || todayISO(),
+
+      // extra calculated fields (optional)
+      newGoldValue: totals.newGoldValue,
+      oldGoldValue: totals.oldValue,
+    };
+
+    return payload;
+  }
+
+  function setMsg(text, type=""){
+    const el = $("msg");
+    el.className = "hint " + (type || "");
+    el.textContent = text;
+  }
+
+  async function saveOrder(){
+    if (!APPS_SCRIPT_URL){
+      setMsg("Add your Apps Script Web App URL inside APPS_SCRIPT_URL in index.html", "error");
+      return;
+    }
+    const payload = readForm();
+
+    setMsg("Saving to Google Sheet...", "");
+    try{
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        mode: "cors",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data && data.ok){
+        setMsg("Saved successfully ✔ Row: " + data.row, "ok");
+      } else {
+        setMsg("Save failed: " + (data?.error || "Unknown error"), "error");
+      }
+    } catch (e){
+      setMsg("Save error: " + e.message, "error");
+    }
+  }
+
+  function loadImageAsDataURL(url){
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => {
+        const c = document.createElement("canvas");
+        c.width = img.naturalWidth; c.height = img.naturalHeight;
+        const ctx = c.getContext("2d");
+        ctx.drawImage(img,0,0);
+        resolve(c.toDataURL("image/png"));
+      };
+      img.onerror = () => resolve(null);
+      img.src = url;
+    });
+  }
+
+  async function downloadPdf(){
+    const payload = readForm();
+    const { jsPDF } = window.jspdf;
+
+    const doc = new jsPDF({unit:"pt", format:"a4"});
+    const W = doc.internal.pageSize.getWidth();
+
+    // Header bar
+    doc.setFillColor(10, 20, 40);
+    doc.rect(0, 0, W, 86, "F");
+
+    // Logo
+    const logo = await loadImageAsDataURL("logo.png");
+    if (logo){
+      doc.addImage(logo, "PNG", 28, 18, 50, 50);
+    }
+
+    doc.setTextColor(255,255,255);
+    doc.setFont("helvetica","bold");
+    doc.setFontSize(16);
+    doc.text("SRI MARUTHAMALAI JEWELS WORKS", 92, 38);
+
+    doc.setFont("helvetica","normal");
+    doc.setFontSize(10);
+    doc.text("Custom Jewellery Designers", 92, 54);
+    doc.text("Phone: 9865739322", 92, 68);
+
+    doc.setFont("helvetica","bold");
+    doc.setFontSize(18);
+    doc.text("INVOICE", W-80, 52, {align:"right"});
+
+    // Body
+    doc.setTextColor(20,20,20);
+    doc.setFontSize(11);
+
+    const startY = 110;
+
+    // Customer block
+    doc.setFont("helvetica","bold");
+    doc.text("Customer:", 28, startY);
+    doc.setFont("helvetica","normal");
+    doc.text(payload.name || "-", 95, startY);
+
+    doc.setFont("helvetica","bold");
+    doc.text("Phone:", 28, startY+18);
+    doc.setFont("helvetica","normal");
+    doc.text(payload.phone || "-", 95, startY+18);
+
+    doc.setFont("helvetica","bold");
+    doc.text("Item:", 320, startY);
+    doc.setFont("helvetica","normal");
+    doc.text(String(payload.item || "-") , 360, startY);
+
+    doc.setFont("helvetica","bold");
+    doc.text("Purity:", 320, startY+18);
+    doc.setFont("helvetica","normal");
+    doc.text(String(payload.purity ?? "-") , 370, startY+18);
+
+    doc.setFont("helvetica","bold");
+    doc.text("Weight:", 28, startY+42);
+    doc.setFont("helvetica","normal");
+    doc.text(String(payload.newGoldWeight) + " g", 95, startY+42);
+
+    doc.setFont("helvetica","bold");
+    doc.text("Gold Rate:", 320, startY+42);
+    doc.setFont("helvetica","normal");
+    doc.text("Rs. " + String(payload.goldRatePerGram), 390, startY+42);
+
+    // Line
+    doc.setDrawColor(220,220,220);
+    doc.line(28, startY+58, W-28, startY+58);
+
+    // Charges table-like layout
+    let y = startY + 84;
+    doc.setFont("helvetica","bold");
+    doc.text("Description", 28, y);
+    doc.text("Amount (Rs.)", W-28, y, {align:"right"});
+
+    y += 10;
+    doc.setDrawColor(230,230,230);
+    doc.line(28, y, W-28, y);
+
+    function row(desc, amt){
+      y += 18;
+      doc.setFont("helvetica","normal");
+      doc.text(desc, 28, y);
+      doc.text(String(amt.toFixed(2)), W-28, y, {align:"right"});
+    }
+
+    row("Gold Value", payload.newGoldValue || 0);
+    row("New Gold Wastage", payload.newGoldWastage || 0);
+    row("Making Charge", payload.makingCharge || 0);
+    row("Stone Charge", payload.stoneCharge || 0);
+    row("Hallmark Charge", payload.hallMarkCharge || 0);
+
+    y += 16;
+    doc.setDrawColor(200,200,200);
+    doc.line(28, y, W-28, y);
+
+    y += 22;
+    doc.setFont("helvetica","bold");
+    doc.text("TOTAL", 28, y);
+    doc.text(String(payload.finalPayable.toFixed(2)), W-28, y, {align:"right"});
+
+    // Old gold
+    y += 26;
+    doc.setFont("helvetica","bold");
+    doc.text("Old Gold Details", 28, y);
+
+    doc.setFont("helvetica","normal");
+    y += 18;
+    if (payload.oldGoldGiven){
+      doc.text(`Old Gold Weight: ${payload.oldGoldWeight} g`, 28, y);
+      y += 16;
+      doc.text(`Old Gold Touch: ${payload.oldGoldPurity}`, 28, y);
+      y += 16;
+      doc.text(`Old Gold Wastage: ${payload.oldGoldWastage} %`, 28, y);
+      y += 16;
+      doc.text(`Old Gold Rate: Rs. ${payload.oldGoldRate}`, 28, y);
+      y += 16;
+      doc.text(`Old Gold Value: ${Number(payload.oldGoldValue || 0).toFixed(2)}`, 28, y);
+    } else {
+      doc.text("Old gold not given", 28, y);
+    }
+
+    // Final payable, advance, balance
+    y += 22;
+    doc.setFont("helvetica","bold");
+    doc.text("Final Payable", 28, y);
+    doc.text(String(payload.finalPayable.toFixed(2)), W-28, y, {align:"right"});
+
+    y += 18;
+    doc.setFont("helvetica","bold");
+    doc.text("Advance Paid", 28, y);
+    doc.text(String(Number(payload.advance||0).toFixed(2)), W-28, y, {align:"right"});
+
+    y += 18;
+    doc.setFont("helvetica","bold");
+    doc.text("Balance Amount", 28, y);
+    doc.text(String(Number(payload.balance||0).toFixed(2)), W-28, y, {align:"right"});
+
+    // Footer
+    const d = payload.date || todayISO();
+    y += 22;
+    doc.setFont("helvetica","normal");
+    doc.setFontSize(10);
+    doc.text(`Date: ${d}`, 28, y);
+
+    doc.setFontSize(10);
+    doc.text("Thank you for your business!", 28, 820);
+
+    const safeName = (payload.name || "invoice").replace(/[^a-z0-9\-\_ ]/gi, "").trim().replace(/\s+/g,"_");
+    doc.save(`${safeName}_${d}.pdf`);
+  }
+
+  function clearAll(){
+    $("custName").value = "";
+    $("custPhone").value = "";
+    $("item").value = "Bangle";
+    $("newPurity").value = 91.6;
+    $("newRate").value = "";
+    $("newWeight").value = "";
+    $("newWastage").value = 0;
+    $("making").value = 0;
+    $("stone").value = 0;
+    $("hallmark").value = 0;
+    $("advance").value = 0;
+
+    $("oldToggle").checked = false;
+    $("oldRate").value = 0;
+    $("oldWeight").value = 0;
+    $("oldPurity").value = 91.6;
+    $("oldWastagePct").value = 0;
+
+    setMsg("");
+    calc();
+  }
+
+  function syncOldSection(){
+    const on = $("oldToggle").checked;
+    $("oldSection").style.display = on ? "block" : "none";
+    calc();
+  }
+
+  // Init
+  $("invoiceDate").value = todayISO();
+  syncOldSection();
+  calc();
+
+  // Events
+  $("oldToggle").addEventListener("change", syncOldSection);
+  $("btnCalc").addEventListener("click", (e)=>{e.preventDefault(); calc(); setMsg("Calculated ✔", "ok");});
+  $("btnSave").addEventListener("click", (e)=>{e.preventDefault(); saveOrder();});
+  $("btnPdf").addEventListener("click", (e)=>{e.preventDefault(); downloadPdf();});
+  $("btnClear").addEventListener("click", (e)=>{e.preventDefault(); clearAll();});
+
+  ["custName","custPhone","item","newPurity","newRate","newWeight","newWastage","making","stone","hallmark","advance","oldRate","oldWeight","oldPurity","oldWastagePct"].forEach(id=>{
+    $(id).addEventListener("input", ()=>{ calc(); });
+  });
 </script>
-
-<div class="box">
-
-<h2>SRI MARUTHAMALAI JEWELS WORKS</h2>
-
-<div class="section">
-<input id="name" placeholder="Customer Name">
-<input id="phone" placeholder="Phone Number">
-</div>
-
-<div class="section">
-<select id="item">
-<option>Ring</option>
-<option>Necklace</option>
-<option>Bangle</option>
-<option>Chain</option>
-</select>
-
-<input id="purity" placeholder="New Gold Purity (%) e.g. 91.6">
-
-<input id="weight" placeholder="New Gold Weight (g)">
-<input id="rate" placeholder="Gold Rate per gram">
-<input id="making" placeholder="Making Charge">
-<input id="newWastage" placeholder="New Gold Wastage (Rs.)">
-<input id="stone" placeholder="Stone Charge">
-<input id="hallmark" placeholder="Hallmark Charge">
-<input id="advance" placeholder="Advance Paid">
-</div>
-
-<div class="section">
-<select id="oldGiven" onchange="toggleOldGold()">
-<option value="no">Old Gold Given? - NO</option>
-<option value="yes">Old Gold Given? - YES</option>
-</select>
-</div>
-
-<div class="section" id="oldSection" style="display:none;">
-<h3>Old Gold Exchange</h3>
-
-<input id="oldTouch" placeholder="Old Gold Purity (%) e.g. 91.6">
-
-<input id="oldWeight" placeholder="Old Gold Weight (g)">
-<input id="oldRate" placeholder="Old Gold Rate">
-<input id="oldWastage" placeholder="Old Gold Wastage (Rs.)">
-</div>
-
-<button onclick="calculate()">CALCULATE</button>
-
-<h3 id="result">Final Payable: Rs. 0</h3>
-<h3 id="balance">Balance: Rs. 0</h3>
-
-<button onclick="saveOrder()">SAVE ORDER</button>
-<button onclick="shareInvoice()">SHARE INVOICE</button>
-<button onclick="generatePDF()">DOWNLOAD PDF</button>
-
-</div>
-
-<script>
-
-/* TOGGLE OLD GOLD */
-function toggleOldGold(){
- let v=document.getElementById("oldGiven").value;
- document.getElementById("oldSection").style.display=
- (v=="yes")?"block":"none";
-
- if(v=="no"){
-  oldWeight.value=0;
-  oldRate.value=0;
- }
-}
-
-/* CALCULATE */
-function calculate(){
-
- let w = Number(weight.value);
- let r = Number(rate.value);
- let m = Number(making.value);
- let s = Number(stone.value);
- let h = Number(hallmark.value);
- let adv = Number(advance.value);
-
- let ow = Number(oldWeight.value);
- let ot = Number(document.getElementById("oldTouch").value);
- let wast = Number(oldWastage.value);
- let orate = Number(oldRate.value);
-
- // NEW GOLD PURITY
- let p = Number(document.getElementById("purity").value);
-
- // NEW GOLD VALUE
- let newWast = Number(document.getElementById("newWastage").value);
- let newTotal = ((w * (p/100)) * r) + m + s + h + newWast;
-
- // OLD GOLD VALUE
- let pure = ow * (ot/100);
- let oldValue = (pure * orate) - wast;
-
-
- // FINAL
- let final = newTotal - oldValue;
- if(final < 0) final = 0;
-
- let bal = final - adv;
- if(bal < 0) bal = 0;
-
- result.innerText = "Final Payable: Rs. " + final.toFixed(2);
- balance.innerText = "Balance: Rs. " + bal.toFixed(2);
-}
-
-
-/* SAVE */
-function saveOrder(){
-
- let nameVal = document.getElementById("name").value || "";
- let phoneVal = document.getElementById("phone").value || "";
- let itemVal = document.getElementById("item").value || "";
- let purityVal = document.getElementById("purity").value || "";
- let weightVal = document.getElementById("weight").value || 0;
- let rateVal = document.getElementById("rate").value || 0;
- let makingVal = document.getElementById("making").value || 0;
- let stoneVal = document.getElementById("stone").value || 0;
- let hallmarkVal = document.getElementById("hallmark").value || 0;
- let advanceVal = document.getElementById("advance").value || 0;
-
- let oldWeightVal = document.getElementById("oldWeight").value || 0;
- let oldTouchVal = document.getElementById("oldTouch").value || 0;
- let oldRateVal = document.getElementById("oldRate").value || 0;
- let newWastageVal = document.getElementById("newWastage").value || 0;
- let oldWastageVal = document.getElementById("oldWastage").value || 0;
-
- let finalText = document.getElementById("result").innerText || "";
- let balanceText = document.getElementById("balance").innerText || "";
-
- let url =
-"https://script.google.com/macros/s/AKfycbz4utLXErNoVjLOjPfVAIl--s-5EEXhQDD0yGCGeUqZq3jDTPcgXy17rgS1lTBex6PD/exec"+
-"?name="+encodeURIComponent(nameVal)+
-"&phone="+encodeURIComponent(phoneVal)+
-"&item="+encodeURIComponent(itemVal)+
-"&purity="+encodeURIComponent(purityVal)+
-"&weight="+weightVal+
-"&rate="+rateVal+
-"&making="+makingVal+
-"&stone="+stoneVal+
-"&hallmark="+hallmarkVal+
-"&oldweight="+oldWeightVal+
-"&oldtouch="+oldTouchVal+
-"&oldrate="+oldRateVal+
-"&oldvalue="+oldValue+
-"&newwastage="+newWastageVal+
-"&oldwastage="+oldWastageVal+
-"&final="+encodeURIComponent(finalText)+
-"&advance="+advanceVal+
-"&balance="+encodeURIComponent(balanceText);
-
- fetch(url)
- .then(r=>r.text())
- .then(t=>alert(t))
- .catch(e=>alert("Save Failed"));
-}
-
-
-/* SHARE */
-function shareInvoice(){
- let msg=
-"SRI MARUTHAMALAI JEWELS WORKS\n"+
-result.innerText+"\n"+
-balance.innerText;
- window.open("https://wa.me/?text="+encodeURIComponent(msg));
-}
-
-/* PDF */
-function generatePDF(){
-
- if(!window.jspdf){
-   alert("Connect internet once for PDF");
-   return;
- }
-
- const { jsPDF } = window.jspdf;
- const doc = new jsPDF("p","mm","a4");
-
- // VALUES
- let cname = document.getElementById("name") 
- ? document.getElementById("name").value 
- : document.querySelector("input[placeholder='Customer Name']").value;
- let phonev = document.getElementById("phone").value;
- let itemv = item.value;
- let purityv = purity.value;
-
- let w = Number(weight.value);
- let r = Number(rate.value);
- let m = Number(making.value);
- let s = Number(stone.value);
- let h = Number(hallmark.value);
- let adv = Number(advance.value);
-
- let ow = Number(oldWeight.value);
- let otText = document.getElementById("oldTouch").value;
- let otVal = Number(oldTouch.value);
- let orate = Number(oldRate.value);
-
- let goldValue = w*r;
- let total = goldValue+m+s+h;
-
- let pure = ow*(otVal/100);
- let oldValue = pure*orate;
-
- let finalAmount = total-oldValue;
- let bal = finalAmount-adv;
-
- let now = new Date();
- let billDate = now.toLocaleDateString();
- let billTime = now.toLocaleTimeString();
-
-
- // LOAD LOGO
- const logo = new Image();
- logo.src = "logo.png";
-
- logo.onload = function(){
-
- // HEADER WITH LOGO
- doc.addImage(logo,"PNG",15,10,25,25);
-
- doc.setFontSize(16);
- doc.text("SRI MARUTHAMALAI JEWELS WORKS",105,20,null,null,"center");
- doc.setFontSize(11);
- doc.text("Custom Jewellery Designers",105,27,null,null,"center");
- doc.text("Phone: 9865739322",105,33,null,null,"center");
-
- doc.setFontSize(14);
- doc.text("INVOICE",105,45,null,null,"center");
-
- doc.setFontSize(11);
- doc.text("Custom Jewellery Designers",105,27,null,null,"center");
- doc.text("Phone: 9865739322",105,33,null,null,"center");
-
- doc.setFontSize(14);
- doc.text("INVOICE",105,45,null,null,"center");
-
- // CUSTOMER INFO
- doc.setFontSize(11);
- doc.text("Customer: "+cname,15,60);
- doc.text("Phone: "+phonev,15,68);
- doc.text("Item: "+itemv,120,60);
- doc.text("Purity: "+purityv,120,68);
- doc.text("Weight: "+w+" g",15,76);
- doc.text("Gold Rate: Rs. "+r,120,76);
-
- // TABLE HEADER
- doc.setFillColor(220,220,220);
- doc.rect(15,85,120,10,"F");
- doc.rect(135,85,60,10,"F");
- doc.text("Description",20,92);
- doc.text("Amount (Rs.)",145,92);
-
- let y=105;
-
- function row(name,val){
-   doc.rect(15,y,120,10);
-   doc.rect(135,y,60,10);
-   doc.text(name,20,y+7);
-   doc.text("Rs. "+val,145,y+7);
-   y+=10;
- }
-
- row("Gold Value",goldValue);
- row("Making Charge",m);
- row("New Gold Wastage",newWast);
- row("Stone Charge",s);
- row("Hallmark Charge",h);
-
- doc.setFillColor(200,255,200);
- doc.rect(15,y,120,10,"F");
- doc.rect(135,y,60,10,"F");
- doc.text("TOTAL",20,y+7);
- doc.text("Rs. "+total,145,y+7);
- y+=15;
-
- // OLD GOLD ONLY IF YES
- if(document.getElementById("oldGiven").value=="yes"){
-
-   doc.setFontSize(12);
-   doc.text("Old Gold Details",20,y);
-   y+=8;
-
- row("Old Gold Weight",ow+" g");
- row("Old Gold Touch",otText);
- row("Old Gold Wastage",wast);
- row("Old Gold Rate",orate);
- row("Old Gold Value",oldValue.toFixed(2));
-
-
-   y+=5;
- }
-
- // FINAL
- row("Final Payable",finalAmount.toFixed(2));
- row("Advance Paid",adv);
- row("Balance Amount",bal.toFixed(2));
-
- y += 8;
- doc.setFontSize(11);
- doc.text("Date: "+billDate,20,y);
- doc.text("Time: "+billTime,120,y);
-
-
-
- doc.setFontSize(10);
- doc.text("Thank you for your business!",105,280,null,null,"center");
-
- doc.save("Invoice.pdf");
- };   // closes logo.onload
-}
-
-</script>
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
