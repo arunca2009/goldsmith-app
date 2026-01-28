@@ -255,6 +255,9 @@ function generatePDF(){
  let s = Number(stone.value);
  let h = Number(hallmark.value);
  let adv = Number(advance.value);
+ let newWast = Number(document.getElementById("newWastage").value || 0);
+ let wast = Number(document.getElementById("oldWastage").value || 0);
+
 
  let ow = Number(oldWeight.value);
  let otText = document.getElementById("oldTouch").value;
@@ -379,4 +382,5 @@ function generatePDF(){
 
 </body>
 </html>
+
 
