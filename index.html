@@ -166,7 +166,6 @@ function saveOrder(){
 
  let nameVal = document.getElementById("name").value || "";
  let phoneVal = document.getElementById("phone").value || "";
- let newWast = Number(document.getElementById("newWastage").value || 0);
  let itemVal = document.getElementById("item").value || "";
  let purityVal = document.getElementById("purity").value || "";
  let weightVal = document.getElementById("weight").value || 0;
@@ -179,6 +178,7 @@ function saveOrder(){
  let oldWeightVal = document.getElementById("oldWeight").value || 0;
  let oldTouchVal = document.getElementById("oldTouch").value || 0;
  let oldRateVal = document.getElementById("oldRate").value || 0;
+ let newWastageVal = document.getElementById("newWastage").value || 0;
  let oldWastageVal = document.getElementById("oldWastage").value || 0;
 
  let finalText = document.getElementById("result").innerText || "";
@@ -370,16 +370,3 @@ function generatePDF(){
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
