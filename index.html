@@ -236,9 +236,8 @@
     if ($("oldToggle").checked){
       const orate = n($("oldRate").value);
       const owt = n($("oldWeight").value);
-      const opurity = n($("oldPurity").value)/100;
       const owast = n($("oldWastageAmt").value);
-      oldValue = Math.max(0, (owt * orate * opurity) - owast);
+      oldValue = Math.max(0, (owt * orate) - owast);
     }
 
     const advance = n($("advance").value);
@@ -477,6 +476,7 @@
 </script>
 </body>
 </html>
+
 
 
 
