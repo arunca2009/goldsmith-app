@@ -221,11 +221,10 @@
   function setMsg(text, type=""){ const el = $("msg"); el.className = "hint " + type; el.textContent = text; }
 
   function calc(){
-    const purity = n($("newPurity").value)/100;
     const rate = n($("newRate").value);
     const weight = n($("newWeight").value);
 
-    const goldValue = weight * rate * purity;
+    const goldValue = weight * rate;
     const wastage = n($("newWastage").value);
     const making = n($("making").value);
     const stone = n($("stone").value);
@@ -478,4 +477,5 @@
 </script>
 </body>
 </html>
+
 
