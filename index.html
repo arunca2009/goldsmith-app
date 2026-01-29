@@ -80,18 +80,18 @@
 
         <div class="row">
           <div>
-            <label>Customer Name</label>
+            <label>Customer Name (வாடிக்கையாளர் பெயர்)</label>
             <input id="custName" type="text" placeholder="Enter customer name">
           </div>
           <div>
-            <label>Contact Number</label>
+            <label>Contact Number (தொலைபேசி எண்)</label>
             <input id="custPhone" type="tel" inputmode="numeric" placeholder="10-digit phone">
           </div>
         </div>
 
         <div class="row" style="margin-top:10px">
           <div>
-            <label>Item</label>
+            <label>Item (நகை வகை)</label>
             <select id="item">
               <option value="Bangle">Bangle</option>
               <option value="Necklace">Necklace</option>
@@ -101,25 +101,25 @@
             </select>
           </div>
           <div>
-            <label>New Gold Purity / Quality (ex: 100 or 91.6)</label>
+            <label>New Gold Purity (தங்க தரம்)</label>
             <input id="newPurity" type="number" step="0.1" value="91.6">
           </div>
         </div>
 
         <div class="row" style="margin-top:10px">
           <div>
-            <label>New Gold Rate per gram (₹)</label>
+            <label>New Gold Rate per gram (₹) (ஒரு கிராம் தங்க விலை)</label>
             <input id="newRate" type="number" step="0.01" placeholder="e.g., 6500">
           </div>
           <div>
-            <label>New Gold Weight (grams)</label>
+            <label>New Gold Weight (grams) (தங்க எடை)</label>
             <input id="newWeight" type="number" step="0.001" placeholder="e.g., 10.250">
           </div>
         </div>
 
         <div class="row" style="margin-top:10px">
           <div>
-            <label>New Gold Wastage (₹)</label>
+            <label>New Gold Wastage (₹) (தங்க கழிவு)</label>
             <input id="newWastage" type="number" step="0.01" value="0">
           </div>
           <div>
@@ -130,29 +130,29 @@
 
         <div class="row" style="margin-top:10px">
           <div>
-            <label>Stone Charge (₹)</label>
+            <label>Stone Charge (₹) (கல்)</label>
             <input id="stone" type="number" step="0.01" value="0">
           </div>
           <div>
-            <label>Hallmark Charge (₹)</label>
+            <label>Hallmark Charge (₹) (ஹால் மார்க்)</label>
             <input id="hallmark" type="number" step="0.01" value="0">
           </div>
         </div>
 
         <div class="row" style="margin-top:10px">
           <div>
-            <label>Advance Paid (₹)</label>
+            <label>Advance Paid (₹) (முன்பணம்)</label>
             <input id="advance" type="number" step="0.01" value="0">
           </div>
           <div>
-            <label style="margin-bottom:6px">Old Gold Given?</label>
+            <label style="margin-bottom:6px">Old Gold Given? (பழைய தங்கம் கொடுக்கப்பட்டதா?)</label>
             <div style="display:flex;align-items:center;gap:10px">
-              <span style="color:var(--muted);font-size:12px">No</span>
+              <span style="color:var(--muted);font-size:12px">No (இல்லை)</span>
               <label class="switch">
                 <input id="oldToggle" type="checkbox">
                 <span class="slider"></span>
               </label>
-              <span style="color:var(--muted);font-size:12px">Yes</span>
+              <span style="color:var(--muted);font-size:12px">Yes (ஆம்)</span>
             </div>
           </div>
         </div>
@@ -161,21 +161,21 @@
           <h2>Old Gold Details (only if Yes)</h2>
           <div class="row">
             <div>
-              <label>Old Gold Rate per gram (₹)</label>
+              <label>Old Gold Rate per gram (₹) (ஒரு கிராம் தங்க விலை)</label>
               <input id="oldRate" type="number" step="0.01" value="0">
             </div>
             <div>
-              <label>Old Gold Weight (grams)</label>
+              <label>Old Gold Weight (grams) (தங்க எடை)</label>
               <input id="oldWeight" type="number" step="0.001" value="0">
             </div>
           </div>
           <div class="row" style="margin-top:10px">
             <div>
-              <label>Old Gold Purity / Touch (ex: 100 or 91.6)</label>
+              <label>Old Gold Purity / Touch (தங்க தரம்)</label>
               <input id="oldPurity" type="number" step="0.1" value="91.6">
             </div>
             <div>
-              <label>Old Gold Wastage (₹)</label>
+              <label>Old Gold Wastage (₹) (தங்க கழிவு)</label>
               <input id="oldWastageAmt" type="number" step="0.01" value="0">
             </div>
           </div>
@@ -196,10 +196,10 @@
       <div class="card">
         <h2>Totals</h2>
         <div class="summary">
-          <div class="pill"><div><small>New Gold Value</small></div><b id="newValue">₹ 0.00</b></div>
-          <div class="pill"><div><small>Old Gold Value</small><div style="color:var(--muted);font-size:12px">(0 if No)</div></div><b id="oldValue">₹ 0.00</b></div>
-          <div class="pill"><div><small>Final Payable (New Gold)</small></div><b id="finalPayable">₹ 0.00</b></div>
-          <div class="pill"><div><small>Balance Amount</small></div><b id="balance">₹ 0.00</b></div>
+          <div class="pill"><div><small>New Gold Value (புதிய தங்க மதிப்பு)</small></div><b id="newValue">₹ 0.00</b></div>
+          <div class="pill"><div><small>Old Gold Value (பழைய தங்க மதிப்பு)</small><div style="color:var(--muted);font-size:12px">(0 if No)</div></div><b id="oldValue">₹ 0.00</b></div>
+          <div class="pill"><div><small>Final Payable (New Gold) (மொத்தம் செலுத்தவேண்டியது)</small></div><b id="finalPayable">₹ 0.00</b></div>
+          <div class="pill"><div><small>Balance Amount (மீதம்)</small></div><b id="balance">₹ 0.00</b></div>
         </div>
         <div class="hint" id="breakdown"></div>
       </div>
@@ -477,5 +477,6 @@
 </script>
 </body>
 </html>
+
 
 
