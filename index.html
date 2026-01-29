@@ -93,11 +93,11 @@
           <div>
             <label>Item (நகை வகை)</label>
             <select id="item">
-              <option value="Bangle">Bangle</option>
-              <option value="Necklace">Necklace</option>
+              <option value="Bangle">Bangle (வளையல்)</option>
+              <option value="Necklace">Necklace (மாலை)</option>
               <option value="Chain">Chain</option>
-              <option value="Earring">Earring</option>
-              <option value="Bracelet">Bracelet</option>
+              <option value="Earring">Earring (காதணி)</option>
+              <option value="Bracelet">Bracelet (காப்பு)</option>
             </select>
           </div>
           <div>
@@ -352,7 +352,7 @@
 
     doc.setTextColor(255,255,255);
     doc.setFont("helvetica","bold"); doc.setFontSize(16);
-    doc.text("SRI MARUTHAMALAI JEWELS WORKS", 92, 38);
+    doc.text("ஸ்ரீ மருதமலை ஜூவல்ஸ் ஒர்க்ஸ்", 92, 38);
     doc.setFont("helvetica","normal"); doc.setFontSize(10);
     doc.text("Custom Jewellery Designers", 92, 54);
     doc.text("Phone: 9865739322", 92, 68);
@@ -362,22 +362,22 @@
     doc.setTextColor(20,20,20); doc.setFontSize(11);
 
     const y0 = 110;
-    doc.setFont("helvetica","bold"); doc.text("Customer:", 28, y0);
+    doc.setFont("helvetica","bold"); doc.text("Customer (பெயர்):", 28, y0);
     doc.setFont("helvetica","normal"); doc.text(p.name || "-", 95, y0);
 
-    doc.setFont("helvetica","bold"); doc.text("Phone:", 28, y0+18);
+    doc.setFont("helvetica","bold"); doc.text("Phone (தொலைபேசி):", 28, y0+18);
     doc.setFont("helvetica","normal"); doc.text(p.phone || "-", 95, y0+18);
 
-    doc.setFont("helvetica","bold"); doc.text("Item:", 320, y0);
+    doc.setFont("helvetica","bold"); doc.text("Item (நகை):", 320, y0);
     doc.setFont("helvetica","normal"); doc.text(String(p.item||"-"), 360, y0);
 
-    doc.setFont("helvetica","bold"); doc.text("Purity:", 320, y0+18);
+    doc.setFont("helvetica","bold"); doc.text("Purity (தரம்):", 320, y0+18);
     doc.setFont("helvetica","normal"); doc.text(String(p.purity||"-"), 370, y0+18);
 
-    doc.setFont("helvetica","bold"); doc.text("Weight:", 28, y0+42);
+    doc.setFont("helvetica","bold"); doc.text("Weight (எடை):", 28, y0+42);
     doc.setFont("helvetica","normal"); doc.text(String(p.newGoldWeight)+" g", 95, y0+42);
 
-    doc.setFont("helvetica","bold"); doc.text("Gold Rate:", 320, y0+42);
+    doc.setFont("helvetica","bold"); doc.text("Gold Rate (விலை):", 320, y0+42);
     doc.setFont("helvetica","normal"); doc.text("Rs. "+String(p.goldRatePerGram), 390, y0+42);
 
     doc.setDrawColor(220,220,220);
@@ -391,11 +391,11 @@
     y += 10; doc.setDrawColor(230,230,230); doc.line(28, y, W-28, y);
 
     const row = (d,a)=>{ y+=18; doc.setFont("helvetica","normal"); doc.text(d,28,y); doc.text(String(Number(a||0).toFixed(2)),W-28,y,{align:"right"}); };
-    row("Gold Value", p.newGoldValue);
-    row("New Gold Wastage", p.newGoldWastage);
+    row("Gold Value (தங்க மதிப்பு)", p.newGoldValue);
+    row("New Gold Wastage (தங்க கழிவு)", p.newGoldWastage);
     row("Making Charge", p.makingCharge);
-    row("Stone Charge", p.stoneCharge);
-    row("Hallmark Charge", p.hallMarkCharge);
+    row("Stone Charge (கல்)", p.stoneCharge);
+    row("Hallmark Charge (ஹால் மார்க்)", p.hallMarkCharge);
 
     y += 16; doc.setDrawColor(200,200,200); doc.line(28,y,W-28,y);
     y += 22; doc.setFont("helvetica","bold");
@@ -405,31 +405,31 @@
     y += 26; doc.setFont("helvetica","bold"); doc.text("Old Gold Details", 28, y);
     y += 18; doc.setFont("helvetica","normal");
     if (p.oldGoldGiven){
-      doc.text(`Old Gold Weight: ${p.oldGoldWeight} g`, 28, y); y+=16;
-      doc.text(`Old Gold Touch: ${p.oldGoldPurity}`, 28, y); y+=16;
-      doc.text(`Old Gold Wastage: Rs. ${p.oldGoldWastage}`, 28, y); y+=16;
-      doc.text(`Old Gold Rate: Rs. ${p.oldGoldRate}`, 28, y); y+=16;
-      doc.text(`Old Gold Value: ${Number(p.oldGoldValue||0).toFixed(2)}`, 28, y);
+      doc.text(`Old Gold Weight (எடை): ${p.oldGoldWeight} g`, 28, y); y+=16;
+      doc.text(`Old Gold Touch (தரம்): ${p.oldGoldPurity}`, 28, y); y+=16;
+      doc.text(`Old Gold Wastage (தங்க கழிவு): Rs. ${p.oldGoldWastage}`, 28, y); y+=16;
+      doc.text(`Old Gold Rate (தங்கம் விலை): Rs. ${p.oldGoldRate}`, 28, y); y+=16;
+      doc.text(`Old Gold Value (தங்க மதிப்பு): ${Number(p.oldGoldValue||0).toFixed(2)}`, 28, y);
     } else {
-      doc.text("Old gold not given", 28, y);
+      doc.text("Old Gold not Given (பழைய தங்கம் கொடுக்கப்படவில்லை)", 28, y);
     }
 
     y += 22; doc.setFont("helvetica","bold");
-    doc.text("Final Payable", 28, y);
+    doc.text("Final Payable (மொத்தம் செலுத்தவேண்டியது)", 28, y);
     doc.text(String(Number(p.finalPayable||0).toFixed(2)), W-28, y, {align:"right"});
 
     y += 18;
-    doc.text("Advance Paid", 28, y);
+    doc.text("Advance Paid (முன்பணம்)", 28, y);
     doc.text(String(Number(p.advance||0).toFixed(2)), W-28, y, {align:"right"});
 
     y += 18;
-    doc.text("Balance Amount", 28, y);
+    doc.text("Balance Amount (மீதம்)", 28, y);
     doc.text(String(Number(p.balance||0).toFixed(2)), W-28, y, {align:"right"});
 
     const d = p.date || todayISO();
     y += 22; doc.setFont("helvetica","normal"); doc.setFontSize(10);
     doc.text(`Date: ${d}`, 28, y);
-    doc.text("Thank you for your business!", 28, 820);
+    doc.text("Thank you for your interest with us!", 28, 820);
 
     const safe = (p.name || "invoice").replace(/[^a-z0-9 _-]/gi,"").trim().replace(/\s+/g,"_");
     doc.save(`${safe}_${d}.pdf`);
@@ -477,6 +477,7 @@
 </script>
 </body>
 </html>
+
 
 
 
